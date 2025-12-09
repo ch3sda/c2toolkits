@@ -1,26 +1,80 @@
 #!/bin/bash
 
-# Dark Theme Color
+################################################################################
+# CyberRecon Toolkit by ch3sda
+# Dark Hacker Neon Edition
+#
+# EDUCATIONAL USE ONLY – legal disclaimer included before execution.
+################################################################################
+
+#==============================
+# COLORS
+#==============================
 RED="\e[91m"; GREEN="\e[92m"; YELLOW="\e[93m"
 BLUE="\e[94m"; PURPLE="\e[95m"; CYAN="\e[96m"
 RESET="\e[0m"; BOLD="\e[1m"
 
+
+#==============================
+# INSTALL CHECK
+#==============================
+check_install(){
+  command -v $1 &>/dev/null || {
+    echo -e "${YELLOW}[+] Installing $1 ...${RESET}"
+    sudo apt install -y $1
+  }
+}
+
+install_dependencies(){
+  tools=("figlet" "nmap" "gobuster" "sqlmap" "hydra" "nikto" "whatweb" "wafw00f" \
+  "dirsearch" "ffuf" "nuclei" "subfinder" "assetfinder" "whois" "dnsenum" "msfconsole")
+
+  for t in "${tools[@]}"; do
+    check_install "$t"
+  done
+}
+
+
+#==============================
+# LEGAL DISCLAIMER
+#==============================
+disclaimer(){
+  clear
+  echo -e "${RED}${BOLD}⚠ LEGAL DISCLAIMER ⚠${RESET}"
+  echo -e "${CYAN}"
+  echo "This toolkit (CyberRecon) MUST only be used for:"
+  echo " - Your own servers"
+  echo " - Lab testing"
+  echo " - Explicitly authorized pentests"
+  echo ""
+  echo "You are fully responsible for your actions."
+  echo ""
+  read -p "Press ENTER if you AGREE..."
+}
+
+
+#==============================
+# BANNER
+#==============================
 banner(){
   clear
   echo -e "${PURPLE}"
-  figlet -f slant "Cyber Toolkit"
+  figlet -f slant "Cyber Toolkit" 2>/dev/null
   echo -e "${RESET}${CYAN}${BOLD}"
   echo "=============================================="
   echo "         DARK HACKER NEON EDITION"
+  echo "          CyberRecon by ch3sda"
   echo "=============================================="
   echo -e "${RESET}"
 }
 
 pause(){ read -p "Press ENTER..."; }
 
-##########################################
-#               NMAP
-##########################################
+
+################################################################################
+###########################   NMAP   ##########################################
+################################################################################
+
 menu_nmap(){
 banner
 read -p "Target: " t
@@ -44,9 +98,11 @@ esac
 pause
 }
 
-##########################################
-#               GOBUSTER
-##########################################
+
+################################################################################
+###########################   GOBUSTER   ######################################
+################################################################################
+
 menu_gobuster(){
 banner
 read -p "URL: " u
@@ -66,9 +122,10 @@ esac
 pause
 }
 
-##########################################
-#               SQLMAP
-##########################################
+################################################################################
+############################  SQLMAP   ########################################
+################################################################################
+
 menu_sqlmap(){
 banner
 read -p "URL: " u
@@ -88,9 +145,10 @@ esac
 pause
 }
 
-##########################################
-#               HYDRA
-##########################################
+################################################################################
+############################  HYDRA   #########################################
+################################################################################
+
 menu_hydra(){
 banner
 read -p "IP: " ip
@@ -101,18 +159,26 @@ hydra -L $u -P $p $ip $svc
 pause
 }
 
-##########################################
-#               NIKTO
-##########################################
+
+################################################################################
+# Other simple menus
+################################################################################
+
 menu_nikto(){ banner; read -p "URL: " u; nikto -h $u; pause; }
-
-##########################################
 menu_whatweb(){ banner; read -p "URL: " u; whatweb $u; pause; }
-
-##########################################
 menu_waf(){ banner; read -p "Domain: " d; wafw00f $d; pause; }
+menu_wayback(){ banner; read -p "Domain: " d; echo $d | waybackurls; pause; }
+menu_whois(){ banner; read -p "Domain: " d; whois $d; pause; }
+menu_dns(){ banner; read -p "Domain: " d; dnsenum $d; pause; }
+menu_ping(){ banner; read -p "Host: " h; ping -c 4 $h; pause; }
+menu_trace(){ banner; read -p "Host: " h; traceroute $h; pause; }
+menu_msf(){ banner; msfconsole; pause; }
 
-##########################################
+
+################################################################################
+# Dirsearch / ffuf / nuclei / subs
+################################################################################
+
 menu_dirsearch(){
 banner
 read -p "URL: " u
@@ -132,7 +198,7 @@ esac
 pause
 }
 
-##########################################
+
 menu_ffuf(){
 banner
 read -p "URL: " u
@@ -152,7 +218,7 @@ esac
 pause
 }
 
-##########################################
+
 menu_nuclei(){
 banner
 read -p "Target: " t
@@ -172,10 +238,7 @@ esac
 pause
 }
 
-##########################################
-menu_wayback(){ banner; read -p "Domain: " d; echo $d | waybackurls; pause; }
 
-##########################################
 menu_quicksubs(){
 banner
 read -p "Domain: " d
@@ -185,20 +248,15 @@ cat subfinder_$d.txt assetfinder_$d.txt | sort -u | tee subs_$d.txt
 pause
 }
 
-##########################################
-menu_whois(){ banner; read -p "Domain: " d; whois $d; pause; }
-menu_dns(){ banner; read -p "Domain: " d; dnsenum $d; pause; }
 
-##########################################
-menu_ping(){ banner; read -p "Host: " h; ping -c 4 $h; pause; }
-menu_trace(){ banner; read -p "Host: " h; traceroute $h; pause; }
 
-##########################################
-menu_msf(){ banner; msfconsole; pause; }
+################################################################################
+#### MAIN
+################################################################################
 
-##########################################
-############ MAIN MENU  ##################
-##########################################
+install_dependencies
+disclaimer
+
 while true; do
 banner
 echo -e "${PURPLE}${BOLD}
