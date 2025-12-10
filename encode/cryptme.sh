@@ -102,7 +102,7 @@ rot_n(){
   local shifted_low="${ALPHA_LOW:$shift}${ALPHA_LOW:0:$shift}"
   echo "$text" | tr "${ALPHA_UP}${ALPHA_LOW}" "${shifted_up}${shifted_low}"
 }
-
+#test
 rot13(){
   echo "$1" | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 }
