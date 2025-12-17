@@ -1,60 +1,9 @@
+# C2Toolkits v2.0
 
-# C2Toolkits
+> **C2Toolkits** is a curated collection of cybersecurity tools featuring both **CLI** and **Web GUI** interfaces, designed for educational purposes, laboratory research, and structured learning environments.
 
-> **C2Toolkits** is a curated collection of cybersecurity tool interfaces designed for educational purposes, laboratory research, and structured learning environments.
-
-**Author:** `@ch3sda`
+**Author:** `@ch3sda`  
 **Repository:** https://github.com/ch3sda/c2toolkits
-
----
-
-## 📌 Overview
-
-C2Toolkits provides an organized framework for cybersecurity tools through intuitive Bash-based command-line interfaces. The toolkit features a neon-themed aesthetic optimized for terminal environments while maintaining focus on educational utility and proper methodology.
-
-### Project Structure
-
-| Directory   | Purpose                                                              |
-| ----------- | -------------------------------------------------------------------- |
-| `encode/` | Encoding utilities, cipher tools, and rotation algorithms            |
-| `recon/`  | Reconnaissance frameworks including nmap, gobuster, ffuf, and nuclei |
-| `tools/`  | Auxiliary Linux utilities and helper scripts                         |
-| `docs/`   | Documentation, usage guides, examples, and visual references         |
-
-### Key Features
-
-- **Interactive Menus:** User-friendly navigation system for tool selection
-- **Visual Design:** Neon green terminal aesthetics with hacker-inspired themes
-- **Preset Configurations:** Quick-start modes with sensible default parameters
-- **Custom Parameters:** Advanced mode allowing full user control over tool arguments
-- **Platform Optimization:** Designed and tested for Kali Linux environments
-
-### Educational Objectives
-
-This toolkit helps learners develop proficiency in:
-
-- Understanding cybersecurity tool capabilities and limitations
-- Proper command syntax and parameter usage
-- Reconnaissance methodology and best practices
-- Systematic approach to security assessment workflows
-
----
-
-## 🎯 Scope and Intended Use
-
-### This Project Is:
-
-✅ **Educational** - Designed for structured learning environments
-✅ **Research-Oriented** - Suitable for controlled laboratory testing
-✅ **Documentation-Focused** - Emphasizes understanding over automation
-✅ **Tutorial-Friendly** - Clear examples and guided workflows
-
-### This Project Is NOT:
-
-❌ An automated exploitation framework
-❌ A "one-click" penetration testing solution
-❌ Intended for unauthorized security assessments
-❌ A substitute for proper authorization and legal compliance
 
 ### Legal and Ethical Considerations
 
@@ -69,6 +18,85 @@ This toolkit should only be used in:
 
 ---
 
+## 📌 Overview
+
+C2Toolkits provides an organized framework for cybersecurity tooling through two complementary interfaces:
+
+- **CLI (Bash-based):** Traditional terminal-driven tools for encoding, ciphers, and reconnaissance.
+- **Web GUI (Nuxt + Vue 3):** A modern, neon-themed browser interface offering interactive workflows and visual feedback.
+
+The project focuses on **learning and methodology**, not automation or exploitation.
+
+---
+
+## 🗂 Project Structure
+
+| Directory  | Purpose                                                                 |
+| ---------- | ----------------------------------------------------------------------- |
+| `encode/`  | Encoding utilities, cipher tools, and rotation algorithms                |
+| `recon/`   | Recon frameworks: nmap, gobuster, ffuf, nuclei                            |
+| `tools/`   | Auxiliary Linux utilities and helper scripts                              |
+| `web-gui/` | Web-based graphical interface (Nuxt + Vue 3)                              |
+| `docs/`    | Documentation, usage guides, and visual references                        |
+
+---
+
+## ✨ Key Features (v2.0)
+
+- **Dual Interface:** Use tools via CLI or Web GUI
+- **Interactive Web UI:** Floating cards, animated lighting, and real-time output
+- **Preset Configurations:** Quick-start modes with sensible defaults
+- **Advanced Parameters:** Full control for experienced users
+- **Educational Design:** Emphasis on understanding tools, not blind execution
+- **Kali Optimized:** Designed and tested primarily on Kali Linux
+
+---
+
+## 🎯 Educational Scope
+
+### This Project IS:
+
+- ✅ Educational and lab-focused
+- ✅ Suitable for CTFs and learning environments
+- ✅ Documentation-driven
+- ✅ Methodology-oriented
+
+### This Project IS NOT:
+
+- ❌ An automated exploitation framework
+- ❌ A one-click penetration testing solution
+- ❌ Intended for unauthorized use
+- ❌ A replacement for legal authorization
+
+---
+
+## ⚙️ System Requirements
+
+### CLI Requirements
+
+- **OS:** Kali Linux (recommended) or Debian-based distributions
+- **Shell:** Bash
+- **Privileges:** sudo / root access
+
+### Web GUI Requirements
+
+- **Node.js:** v18+ recommended
+- **npm:** v9+
+
+Verify installation:
+
+```bash
+node -v
+npm -v
+```
+## 🌐 Web GUI Setup (v2.0)
+
+```bash
+cd web-gui
+npm install
+npm run dev
+```
+Access the GUI at `http://localhost:3000` in your web browser.
 ## ⚙️ System Requirements
 
 ### Prerequisites
