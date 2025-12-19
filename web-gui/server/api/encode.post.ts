@@ -1,12 +1,13 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import path from 'path';
 
 const execAsync = promisify(exec);
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { tool, input, extra } = body; // extra = shift/key if needed
-  const scriptPath = '../../encode/cryptme.sh';
+  const scriptPath = path.resolve(process.cwd(), '../tools/encode/cryptme.sh');
 
   try {
     const args = extra ? `"${input}" "${extra}"` : `"${input}"`;

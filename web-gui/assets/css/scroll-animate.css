@@ -1,0 +1,14 @@
+/* Initial hidden state */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* When visible */
+.animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}

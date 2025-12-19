@@ -2,6 +2,11 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+compatibilityDate: '2025-12-20', // Add this line
+  css: [
+    '~/assets/css/main.css',
+    '~/assets/css/scroll-animate.css' // 🔥 REQUIRED
+  ],
 
   modules: [
     '@nuxtjs/tailwindcss'
@@ -12,15 +17,7 @@ export default defineNuxtConfig({
   },
 
   tailwindcss: {
-    cssPath: '~/assets/css/main.css', // your main CSS file
     viewer: true
-  },
-
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
   },
 
   app: {
@@ -29,7 +26,10 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'C2Toolkits - Encoding & Recon Tools' }
+        {
+          name: 'description',
+          content: 'C2Toolkits - Encoding, Recon & Cybersecurity Learning Tools'
+        }
       ]
     }
   },

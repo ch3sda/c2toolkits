@@ -4,8 +4,13 @@
       v-for="(tool, idx) in reconTools"
       :key="idx"
       @click="selectReconTool(tool)"
-      class="bg-black/40 backdrop-blur-sm rounded-lg border border-cyan-500/30 p-6 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 transition-all cursor-pointer group"
+      class="relative bg-black/40 backdrop-blur-sm rounded-lg border border-cyan-500/30 p-6 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 transition-all cursor-pointer group"
     >
+      <!-- Multi Tags / Badges -->
+      <div v-if="tool.tags?.length" class="absolute top-3 right-3 flex space-x-2">
+        <Badge v-for="(tag, tIdx) in tool.tags" :key="tIdx" :label="tag.label" :color="tag.color" />
+      </div>
+
       <div class="flex items-center space-x-3 mb-3">
         <div class="p-3 bg-cyan-500/20 rounded-lg group-hover:bg-cyan-500/30 transition-all">
           <component :is="tool.icon" :size="20" />
@@ -18,44 +23,68 @@
         CLI Tool Available
       </div>
     </div>
-
-    <!-- Tool Execution Modal (Optional) -->
-    <div v-if="selectedTool" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50" @click="selectedTool = null">
-      <div @click.stop class="bg-gray-900 border border-cyan-500 rounded-lg p-6 max-w-2xl w-full mx-4">
-        <h2 class="text-2xl font-bold text-cyan-300 mb-4">{{ selectedTool.name }}</h2>
-        <p class="text-gray-300 mb-4">{{ selectedTool.desc }}</p>
-        <div class="bg-black/50 border border-cyan-500/30 rounded p-4 mb-4">
-          <p class="text-sm text-yellow-300">
-            ⚠ This tool requires backend integration with your bash scripts.
-            See the API integration guide below.
-          </p>
-        </div>
-        <button
-          @click="selectedTool = null"
-          class="w-full bg-cyan-600 hover:bg-cyan-700 py-2 rounded transition-all"
-        >
-          Close
-        </button>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Search, Wifi, Database, Shield, Activity, Terminal } from 'lucide-vue-next';
+import Badge from './Badge.vue';
+
+const router = useRouter();
 
 const reconTools = [
-  { name: 'Nmap Scanner', icon: Search, desc: 'Port scanning & network discovery', command: 'nmap' },
-  { name: 'Gobuster', icon: Wifi, desc: 'Directory & DNS busting', command: 'gobuster' },
-  { name: 'SQLMap', icon: Database, desc: 'SQL injection testing', command: 'sqlmap' },
-  { name: 'Nikto', icon: Shield, desc: 'Web server scanner', command: 'nikto' },
-  { name: 'Subfinder', icon: Activity, desc: 'Subdomain enumeration', command: 'subfinder' }
+  {
+    name: 'Nmap Scanner',
+    icon: Search,
+    desc: 'Port scanning & network discovery',
+    command: 'nmap',
+    tags: [
+      { label: 'AI', color: 'bg-red-600' },
+      { label: 'Network', color: 'bg-cyan-500' }
+    ],
+    route: '/nmap'
+  },
+  {
+    name: 'Gobuster',
+    icon: Wifi,
+    desc: 'Directory & DNS busting',
+    command: 'gobuster',
+    tags: [
+      { label: 'AI', color: 'bg-red-600' },
+      { label: 'Web', color: 'bg-yellow-500' }
+    ],
+    route: '/gobuster'
+  },
+  {
+    name: 'SQLMap',
+    icon: Database,
+    desc: 'SQL injection testing',
+    command: 'sqlmap',
+    tags: [{ label: 'Database', color: 'bg-purple-500' }],
+    route: '/sqlmap'
+  },
+  {
+    name: 'Nikto',
+    icon: Shield,
+    desc: 'Web server scanner',
+    command: 'nikto',
+    tags: [{ label: 'Network', color: 'bg-cyan-500' }],
+    route: '/nikto'
+  },
+  {
+    name: 'Subfinder',
+    icon: Activity,
+    desc: 'Subdomain enumeration',
+    command: 'subfinder',
+    tags: [{ label: 'Subdomain', color: 'bg-pink-500' }],
+    route: '/subfinder'
+  }
 ];
 
-const selectedTool = ref(null);
-
 const selectReconTool = (tool: any) => {
-  selectedTool.value = tool;
+  if (tool.route) {
+    router.push(tool.route);
+  }
 };
 </script>

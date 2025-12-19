@@ -1,0 +1,419 @@
+<template>
+  <div class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 text-white overflow-hidden relative">
+    <!-- Animated Grid -->
+    <div class="fixed inset-0 bg-[linear-gradient(rgba(147,51,234,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(147,51,234,0.06)_1px,transparent_1px)] bg-[size:50px_50px] animate-grid opacity-30" />
+    
+    <!-- Scan Line Effect -->
+    <div class="scan-line" />
+    
+    <!-- Floating Particles -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="particle particle-1" />
+      <div class="particle particle-2" />
+      <div class="particle particle-3" />
+      <div class="particle particle-4" />
+      <div class="particle particle-5" />
+    </div>
+
+    <div class="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-16">
+      <!-- HERO -->
+      <Transition name="hero">
+        <div v-if="mounted" class="text-center">
+          <!-- Logo -->
+          <div class="flex items-center justify-center space-x-4 mb-8 relative">
+            <div class="relative">
+              <div class="pulse-ring" />
+              <div class="pulse-ring" style="animation-delay: 1s;" />
+              <Terminal :size="64" class="text-purple-400 animate-float" />
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent animate-gradient glow-text">
+              C2Toolkits
+            </h1>
+          </div>
+          
+          <p class="text-purple-200 text-xl mb-5 max-w-2xl mx-auto leading-relaxed">
+            A curated cybersecurity arsenal for education, CTFs, and authorized security testing.
+          </p>
+          <p class="text-gray-400 text-sm mb-12 max-w-xl mx-auto">
+            Empowering security researchers and ethical hackers with professional-grade tools for reconnaissance, encoding, and network analysis.
+          </p>
+          
+          <!-- CTA -->
+          <div class="flex flex-wrap justify-center gap-5 mb-24">
+            <NuxtLink to="/recon" class="btn-primary group">
+              <Shield :size="20" class="inline-block mr-2 group-hover:rotate-12 transition-transform" />
+              Recon Tools
+            </NuxtLink>
+            <NuxtLink to="/encode" class="btn-secondary group">
+              <Lock :size="20" class="inline-block mr-2 group-hover:scale-125 transition-transform" />
+              Encode / Decode
+            </NuxtLink>
+            <NuxtLink to="/analyze" class="btn-tertiary group">
+              <ScanSearch :size="20" class="inline-block mr-2 group-hover:rotate-180 transition-transform duration-500" />
+              Analyze
+            </NuxtLink>
+          </div>
+          
+          <!-- Stats -->
+          <div class="grid grid-cols-3 gap-10 max-w-3xl mx-auto mb-20">
+            <div class="stat-card">
+              <div class="text-4xl font-black text-transparent bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text mb-2">25+</div>
+              <div class="text-xs text-gray-400 uppercase tracking-wider">Tools</div>
+            </div>
+            <div class="stat-card">
+              <div class="text-4xl font-black text-transparent bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text mb-2">100%</div>
+              <div class="text-xs text-gray-400 uppercase tracking-wider">Free</div>
+            </div>
+            <div class="stat-card">
+              <div class="text-4xl font-black text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text mb-2">24/7</div>
+              <div class="text-xs text-gray-400 uppercase tracking-wider">Available</div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+
+      <!-- FEATURES -->
+      <div class="w-full max-w-7xl mb-24">
+        <h2 class="text-4xl font-black text-center mb-16 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-gradient">
+          Powerful Features
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <TransitionGroup name="card" tag="div" class="contents">
+            <div
+              v-for="(item, i) in features"
+              :key="item.title"
+              class="feature-card group"
+              :style="{ transitionDelay: `${i * 100}ms` }"
+            >
+              <div class="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-20 transition-opacity rounded-2xl" :class="item.color" />
+              <component :is="item.icon" :size="42" class="mb-5 text-purple-400 group-hover:scale-125 transition-transform duration-300" />
+              <h3 class="font-bold text-xl mb-3">{{ item.title }}</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">{{ item.desc }}</p>
+            </div>
+          </TransitionGroup>
+        </div>
+      </div>
+
+      <!-- USE CASES -->
+      <div class="w-full max-w-6xl mb-24">
+        <h2 class="text-4xl font-black text-center mb-16 bg-gradient-to-r from-pink-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-gradient">
+          Built For
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="use-case-card">
+            <div class="text-5xl mb-4">🎓</div>
+            <h3 class="font-bold text-xl mb-3">Security Students</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">Learn penetration testing and ethical hacking fundamentals through hands-on practice in safe environments.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="text-5xl mb-4">🚩</div>
+            <h3 class="font-bold text-xl mb-3">CTF Players</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">Solve capture-the-flag challenges faster with specialized tooling and encoding utilities.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="text-5xl mb-4">🔒</div>
+            <h3 class="font-bold text-xl mb-3">Security Researchers</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">Conduct authorized testing and vulnerability assessments on approved systems with enterprise tools.</p>
+          </div>
+          <div class="use-case-card">
+            <div class="text-5xl mb-4">💼</div>
+            <h3 class="font-bold text-xl mb-3">Bug Bounty Hunters</h3>
+            <p class="text-sm text-gray-300 leading-relaxed">Streamline reconnaissance and enumeration workflows for faster vulnerability discovery.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="w-full max-w-5xl border-t border-purple-500/30 pt-12">
+        <div class="bg-gradient-to-r from-yellow-500/10 to-red-500/10 border border-yellow-500/40 rounded-2xl p-8 mb-10 backdrop-blur-sm relative overflow-hidden">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(251,191,36,0.1),transparent_50%)]" />
+          <div class="relative flex items-start space-x-4">
+            <div class="text-3xl">⚠️</div>
+            <div>
+              <h4 class="font-bold text-yellow-300 text-lg mb-3">Legal Notice</h4>
+              <p class="text-sm text-yellow-100/90 leading-relaxed">
+                <strong>Educational Use Only.</strong> Unauthorized access to computer systems is illegal. 
+                Only use these tools on systems you own or have explicit written permission to test.
+                Violating computer security laws can result in criminal prosecution under the Computer Fraud and Abuse Act (CFAA) and similar international laws.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="text-center text-gray-500 text-sm">
+          <p class="mb-2">© 2025 C2Toolkits. Built for ethical hackers, by ethical hackers.</p>
+          <p class="text-xs text-gray-600">Always follow responsible disclosure practices.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { Terminal, Lock, ScanSearch, Shield, Eye } from 'lucide-vue-next'
+
+const mounted = ref(false)
+
+onMounted(() => {
+  setTimeout(() => {
+    mounted.value = true
+  }, 100)
+})
+
+const features = [
+  {
+    title: 'Encoding & Encryption',
+    desc: 'Transform data with Base64, Hex, ROT13, Caesar cipher, and advanced encoding schemes for cryptanalysis.',
+    icon: Lock,
+    color: 'from-purple-500 to-pink-500'
+  },
+  {
+    title: 'Hash Identification',
+    desc: 'Instantly identify MD5, SHA, bcrypt, and 50+ hash types with AI-powered confidence scoring.',
+    icon: ScanSearch,
+    color: 'from-cyan-500 to-blue-500'
+  },
+  {
+    title: 'Network Recon',
+    desc: 'Discover hosts, enumerate services, and map attack surfaces in controlled lab environments.',
+    icon: Shield,
+    color: 'from-pink-500 to-red-500'
+  },
+  {
+    title: 'Payload Generation',
+    desc: 'Create custom shellcode, reverse shells, and payloads for authorized penetration testing.',
+    icon: Terminal,
+    color: 'from-green-500 to-emerald-500'
+  },
+  {
+    title: 'OSINT Tools',
+    desc: 'Gather intelligence from public sources with specialized search operators and data aggregation.',
+    icon: Eye,
+    color: 'from-orange-500 to-yellow-500'
+  },
+  {
+    title: 'Lab Environment',
+    desc: 'Safe, isolated testing grounds with vulnerable machines for practicing security techniques legally.',
+    icon: Lock,
+    color: 'from-indigo-500 to-purple-500'
+  }
+]
+</script>
+
+<style scoped>
+/* HERO ENTER */
+.hero-enter-active {
+  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hero-enter-from {
+  opacity: 0;
+  transform: translateY(60px) scale(0.9);
+}
+
+/* CARD STAGGER */
+.card-enter-active {
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.card-enter-from {
+  opacity: 0;
+  transform: translateY(40px) rotateX(15deg);
+}
+
+/* BUTTONS */
+.btn-primary {
+  @apply px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 
+  hover:from-cyan-500 hover:to-blue-500 font-bold text-sm
+  transition-all duration-300 transform hover:scale-110 hover:-translate-y-1
+  shadow-lg shadow-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/70;
+}
+.btn-secondary {
+  @apply px-8 py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 
+  hover:from-purple-500 hover:to-pink-500 font-bold text-sm
+  transition-all duration-300 transform hover:scale-110 hover:-translate-y-1
+  shadow-lg shadow-purple-500/50 hover:shadow-2xl hover:shadow-purple-500/70;
+}
+.btn-tertiary {
+  @apply px-8 py-4 rounded-xl bg-gradient-to-r from-pink-600 to-red-600 
+  hover:from-pink-500 hover:to-red-500 font-bold text-sm
+  transition-all duration-300 transform hover:scale-110 hover:-translate-y-1
+  shadow-lg shadow-pink-500/50 hover:shadow-2xl hover:shadow-pink-500/70;
+}
+
+/* FEATURE CARD */
+.feature-card {
+  @apply bg-black/40 backdrop-blur-md border border-purple-500/30 rounded-2xl p-8
+  hover:scale-105 hover:border-purple-400/60 transition-all duration-300 
+  hover:shadow-2xl hover:shadow-purple-500/40 relative overflow-hidden cursor-pointer;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(168,85,247,0.1), transparent);
+  transition: left 0.5s;
+}
+
+.feature-card:hover::before {
+  left: 100%;
+}
+
+/* USE CASE CARD */
+.use-case-card {
+  @apply bg-gradient-to-br from-purple-900/40 to-pink-900/40 backdrop-blur-md 
+  border border-purple-500/30 rounded-2xl p-7 
+  hover:scale-105 hover:border-purple-400/50 transition-all duration-300
+  hover:shadow-xl hover:shadow-purple-500/30 cursor-pointer;
+}
+
+/* STAT CARD */
+.stat-card {
+  @apply transform hover:scale-110 transition-all duration-300 cursor-pointer
+  hover:text-cyan-300;
+}
+
+/* ANIMATED GRADIENT */
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+  background-size: 300% 300%;
+  animation: gradient 4s ease infinite;
+}
+
+/* FLOATING ANIMATION */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-15px) rotate(8deg);
+  }
+  66% {
+    transform: translateY(-8px) rotate(-8deg);
+  }
+}
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 25px rgba(168,85,247,0.7));
+}
+
+/* GRID ANIMATION */
+@keyframes grid {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(50px); }
+}
+.animate-grid {
+  animation: grid 25s linear infinite;
+}
+
+/* PARTICLES */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.particle-1 {
+  width: 6px;
+  height: 6px;
+  top: 15%;
+  left: 8%;
+  background: radial-gradient(circle, rgba(168,85,247,1) 0%, transparent 70%);
+  animation: particle-float 18s infinite;
+}
+.particle-2 {
+  width: 8px;
+  height: 8px;
+  top: 55%;
+  left: 85%;
+  background: radial-gradient(circle, rgba(236,72,153,1) 0%, transparent 70%);
+  animation: particle-float 22s infinite 4s;
+}
+.particle-3 {
+  width: 5px;
+  height: 5px;
+  top: 35%;
+  left: 65%;
+  background: radial-gradient(circle, rgba(34,211,238,1) 0%, transparent 70%);
+  animation: particle-float 20s infinite 8s;
+}
+.particle-4 {
+  width: 7px;
+  height: 7px;
+  top: 75%;
+  left: 15%;
+  background: radial-gradient(circle, rgba(168,85,247,1) 0%, transparent 70%);
+  animation: particle-float 24s infinite 12s;
+}
+.particle-5 {
+  width: 6px;
+  height: 6px;
+  top: 25%;
+  left: 92%;
+  background: radial-gradient(circle, rgba(236,72,153,1) 0%, transparent 70%);
+  animation: particle-float 19s infinite 6s;
+}
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(120px, -120px) scale(1.8);
+    opacity: 0.8;
+  }
+}
+
+/* PULSE RING */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+.pulse-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(168,85,247,0.5);
+  border-radius: 50%;
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* GLOW TEXT */
+.glow-text {
+  text-shadow: 0 0 20px rgba(168,85,247,0.5),
+               0 0 40px rgba(168,85,247,0.3),
+               0 0 60px rgba(168,85,247,0.2);
+}
+
+/* SCAN LINE */
+@keyframes scan {
+  0% { top: -50%; }
+  100% { top: 150%; }
+}
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(transparent, rgba(168,85,247,0.1), transparent);
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+}
+</style>

@@ -1,14 +1,53 @@
-/* assets/css/main.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom animation example */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ---------- Scroll Fade ---------- */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-in;
+.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(to right, #06b6d4, #8b5cf6);
+  border-radius: 0.75rem;
+  color: black;
+  font-weight: bold;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+}
+
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #9333ea;
+  border-radius: 0.75rem;
+}
+
+/* ---------- Feature Cards ---------- */
+.feature-card {
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(147, 51, 234, 0.35);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 35px rgba(147, 51, 234, 0.45);
 }

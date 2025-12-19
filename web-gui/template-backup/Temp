@@ -16,7 +16,7 @@
           <Terminal :size="24" class="text-purple-400 group-hover:scale-110 transition-transform" />
         </div>
         <div>
-          <h2 class="text-sm font-black tracking-[0.3em] uppercase italic leading-none mb-1">C2Toolkits</h2>
+          <h2 class="text-sm font-black tracking-[0.3em] uppercase italic leading-none mb-1">C2_Terminal</h2>
           <div class="flex items-center gap-2">
             <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span>
             <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Node_v3.0_Stable</span>
@@ -25,9 +25,8 @@
       </div>
 
       <nav class="hidden md:flex items-center gap-10">
-        <a href="/document" class="text-[10px] font-black tracking-[0.4em] text-gray-400 hover:text-purple-400 transition-colors uppercase cursor-crosshair">Document</a>
-        <a href="#modules" class="text-[10px] font-black tracking-[0.4em] text-gray-400 hover:text-purple-400 transition-colors uppercase cursor-crosshair">Feature</a>
-        <a href="https://github.com/ch3sda/c2toolkits" target="_blank" class="text-[10px] font-black tracking-[0.4em] text-gray-400 hover:text-purple-400 transition-colors uppercase">Soruce</a>
+        <a href="#modules" class="text-[10px] font-black tracking-[0.4em] text-gray-400 hover:text-purple-400 transition-colors uppercase cursor-crosshair">Arsenal</a>
+        <a href="https://github.com/ch3sda/c2toolkits" target="_blank" class="text-[10px] font-black tracking-[0.4em] text-gray-400 hover:text-purple-400 transition-colors uppercase">Registry</a>
         <div class="h-4 w-[1px] bg-white/10"></div>
         <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
           <span class="text-[9px] font-black tracking-widest uppercase text-purple-300">ED_Edition</span>
@@ -38,7 +37,7 @@
 
     <div class="relative z-20 flex flex-col items-center">
       
-      <section class="min-h-[80vh] flex flex-col items-center justify-center text-center px-6 ">
+      <section class="min-h-[80vh] flex flex-col items-center justify-center text-center px-6 pt-12 pb-24">
         <Transition name="hero" appear>
           <div v-if="mounted" class="space-y-12">
             <div class="relative inline-block">
@@ -54,28 +53,24 @@
             </p>
             
             <div class="flex flex-wrap justify-center gap-6">
-          <div class="flex flex-wrap justify-center gap-6 mb-24">
-            <NuxtLink to="/recon" class="btn-cyber btn-cyan group">
-              <span class="relative z-10 flex items-center">
-                <Shield :size="20" class="mr-2 group-hover:rotate-12 transition-transform" />
-                RECON TOOLS
-              </span>
-            </NuxtLink>
-            
-            <NuxtLink to="/cryptography" class="btn-cyber btn-dark group">
-              <span class="relative z-10 flex items-center">
-                <Lock :size="20" class="mr-2 group-hover:scale-125 transition-transform" />
-                ENCODE / DECODE
-              </span>
-            </NuxtLink>
-
-            <NuxtLink to="/identifier" class="btn-cyber btn-purple group">
-              <span class="relative z-10 flex items-center">
-                <ScanSearch :size="20" class="mr-2 group-hover:rotate-180 transition-transform duration-700" />
-                ANALYZE
-              </span>
-            </NuxtLink>
-          </div>
+              <NuxtLink to="/recon" class="btn-cyber btn-cyan group">
+                <span class="relative z-10 flex items-center">
+                  <Shield :size="18" class="mr-3 group-hover:rotate-12 transition-transform" />
+                  RECON_TOOLS
+                </span>
+              </NuxtLink>
+              <NuxtLink to="/cryptography" class="btn-cyber btn-purple group">
+                <span class="relative z-10 flex items-center">
+                  <Lock :size="18" class="mr-3 group-hover:scale-110 transition-transform" />
+                  CRYPTO_CORE
+                </span>
+              </NuxtLink>
+              <NuxtLink to="/cryptography" class="btn-cyber btn-purple group">
+                <span class="relative z-10 flex items-center">
+                  <Lock :size="18" class="mr-3 group-hover:scale-110 transition-transform" />
+                  CRYPTO_CORE
+                </span>
+              </NuxtLink>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto mt-24">
@@ -91,10 +86,10 @@
         </Transition>
       </section>
 
-      <section id="modules" class="w-full max-w-7xl px-6 py-10">
+      <section id="modules" class="w-full max-w-7xl px-6 py-32">
         <div class="flex items-center justify-center space-x-6 mb-20">
           <div class="h-[1px] flex-1 bg-gradient-to-r from-transparent via-purple-500/50 to-purple-500/10" />
-          <h2 class="text-2xl font-black tracking-[0.5em] uppercase italic text-white/90">Core_Feature</h2>
+          <h2 class="text-2xl font-black tracking-[0.5em] uppercase italic text-white/90">Core_Arsenal</h2>
           <div class="h-[1px] flex-1 bg-gradient-to-l from-transparent via-purple-500/50 to-purple-500/10" />
         </div>
 
@@ -118,7 +113,7 @@
         </div>
       </section>
 
-      <footer class="w-full max-w-7xl mx-auto mt-10 pb-16 px-6">
+      <footer class="w-full max-w-7xl mx-auto mt-40 pb-16 px-6">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-16 border-t border-white/10 pt-20 mb-20 relative">
           
           <div class="col-span-1 lg:col-span-2 space-y-8">
