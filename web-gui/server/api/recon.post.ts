@@ -35,7 +35,18 @@ export default defineEventHandler(async (event) => {
         case 'custom': args = [...customFlags.split(' '), target]; break;
         default:      args = [target];
       }
+    }else if (tool === 'gobuster') {
+    command = 'gobuster';
+    const wordlistBase = '/usr/share/wordlists'; // Adjust based on your server
+    
+    switch (mode) {
+      case 'common': args = ['dir', '-u', target, '-w', `${wordlistBase}/dirb/common.txt`]; break;
+      case 'medium': args = ['dir', '-u', target, '-w', `${wordlistBase}/dirbuster/directory-list-2.3-medium.txt`]; break;
+      case 'big':    args = ['dir', '-u', target, '-w', `${wordlistBase}/dirb/big.txt`]; break;
+      case 'custom': args = [...customFlags.split(' ')]; break;
+      default:      args = ['dir', '-u', target];
     }
+  }
 
     const child = spawn(command, args);
     activeProcesses.set(target, child);
