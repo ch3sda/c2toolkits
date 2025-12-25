@@ -2,13 +2,11 @@
   <div class="min-h-screen bg-[#050505] text-white font-mono p-4 lg:p-8 selection:bg-cyan-500/30 overflow-x-hidden relative">
     
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      <div class="absolute -top-[10%] -left-[5%] w-[50%] h-[50%] bg-cyan-500/20 blur-[120px] rounded-full animate-pulse-slow"></div>
-      
-      <div class="absolute top-[20%] -right-[10%] w-[45%] h-[60%] bg-blue-600/15 blur-[130px] rounded-full animate-drift"></div>
-      
-      <div class="absolute -bottom-[15%] left-[20%] w-[60%] h-[40%] bg-cyan-900/20 blur-[160px] rounded-full"></div>
-      
-      <div class="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+      <div class="absolute inset-0 bg-[#050505]" />
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.25)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.25)_1px,transparent_1px)] bg-[size:60px_60px] opacity-80" />
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-blue-500/20 blur-[160px] rounded-full animate-pulse-slow" />
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#050505_90%)]" />
+      <div class="absolute inset-0 opacity-[0.04] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
     </div>
 
     <Transition name="fade">
@@ -70,25 +68,24 @@
 
             <div class="flex gap-2">
               <button @click="executeScan" :disabled="isRunning || !target" class="execute-trigger flex-grow relative overflow-hidden group">
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
                 <component :is="isRunning ? 'Loader2' : 'Zap'" :class="isRunning ? 'animate-spin' : ''" :size="16" />
                 {{ isRunning ? 'SCANNING...' : 'INITIATE_SCAN' }}
               </button>
               
-              <button v-if="isRunning" @click="cancelScan" class="w-14 bg-red-600/10 border border-red-600/40 rounded-xl flex items-center justify-center hover:bg-red-600 hover:text-black transition-all group shadow-lg shadow-red-600/5">
-                <X :size="20" class="group-hover:scale-125 transition-transform" />
+              <button v-if="isRunning" @click="cancelScan" class="w-14 bg-red-600/10 border border-red-600/40 rounded-xl flex items-center justify-center hover:bg-red-600 hover:text-black transition-all group">
+                <X :size="20" />
               </button>
             </div>
           </div>
 
-          <div class="p-6 bg-black/60 border border-white/5 rounded-2xl h-[550px] flex flex-col backdrop-blur-md">
+          <div class="p-6 bg-black/60 border border-white/5 rounded-2xl h-[674px] flex flex-col backdrop-blur-md">
             <h3 class="text-yellow-500/70 text-[10px] font-black tracking-[0.3em] uppercase mb-4 flex items-center gap-2">
               <BookOpen :size="14" /> MANUAL_DATABASE
             </h3>
             <div class="overflow-y-auto custom-scroll pr-2 text-[10px] space-y-5">
               <div v-for="(section, title) in fullUsageDoc" :key="title">
                 <p class="text-white/20 mb-2 border-b border-white/5 pb-1 font-black italic uppercase tracking-widest">// {{ title }}</p>
-                <div v-for="item in section" :key="item.cmd" class="grid grid-cols-3 gap-2 mb-2 group">
+                <div v-for="item in section" :key="item.cmd" class="grid grid-cols-3 gap-2 mb-2 group text-gray-500">
                   <span class="text-cyan-400 font-bold col-span-1">{{ item.cmd }}</span>
                   <span class="text-gray-500 col-span-2 leading-tight uppercase group-hover:text-gray-300 transition-colors">{{ item.desc }}</span>
                 </div>
@@ -98,14 +95,15 @@
         </aside>
 
         <main class="col-span-12 lg:col-span-8 space-y-6">
-          <div class="flex flex-col h-[550px] bg-black/70 border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-2xl relative group">
+          
+          <div class="flex flex-col h-[400px] bg-black/70 border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-2xl relative group">
             <div class="absolute inset-0 bg-cyan-500/[0.03] pointer-events-none"></div>
             
             <div class="bg-white/[0.07] px-5 py-3 border-b border-white/10 flex justify-between items-center relative z-10">
               <span class="text-[10px] font-black text-cyan-400 uppercase tracking-widest flex items-center gap-2">
                 <div class="w-1.5 h-1.5 bg-cyan-500 rounded-full animate-pulse shadow-[0_0_8px_#06b6d4]"></div>
                 Standard_Output // Nmap
-                <span v-if="isRunning" class="text-red-500 animate-pulse text-[8px] border border-red-500/30 px-1 rounded uppercase">Ctrl+C_Attached</span>
+                <span v-if="isRunning" class="text-red-500 animate-pulse text-[8px] border border-red-500/30 px-1 rounded uppercase ml-2">SIGINT_Attached</span>
               </span>
               <button @click="output = ''" class="text-[9px] text-red-500/50 hover:text-red-500 transition-colors uppercase font-black">Flush_Buffer</button>
             </div>
@@ -118,8 +116,8 @@
                 {{ output }}
               </div>
               <div v-else-if="isRunning" class="h-full flex flex-col items-center justify-center gap-4 text-cyan-500/20 italic">
-                <Radar :size="64" class="animate-spin-slow text-cyan-500/40" />
-                <span class="animate-pulse tracking-[0.4em] uppercase text-[10px] text-cyan-500/60">Intercepting_Data_Stream...</span>
+                <Radar :size="80" class="animate-spin-slow text-cyan-500/40" />
+                <span class="animate-pulse tracking-[0.4em] uppercase text-[12px] text-cyan-500/60">Intercepting_Data_Stream...</span>
               </div>
               <div v-else class="h-full flex items-center justify-center text-white/5 uppercase tracking-[0.5em] text-[10px]">
                 Ready_for_target_handshake
@@ -132,11 +130,20 @@
             <h3 class="text-purple-400 text-[10px] font-black tracking-[0.3em] uppercase mb-4 flex items-center gap-2">
               <BrainCircuit :size="14" /> AI_Heuristic_Engine
             </h3>
-            <div v-if="output" class="text-gray-300 text-xs leading-relaxed italic animate-reveal border-l border-purple-500/50 pl-4">
-               "Buffer analysis complete. No critical vulnerabilities detected in initial handshake. Recommendation: Use <span class="text-purple-400">-sV</span> for version interrogation if service banners are obscured."
-            </div>
-            <div v-else class="text-gray-800 text-[9px] uppercase tracking-widest italic">
-              Neural link standby...
+            
+            <div class="min-h-[120px]">
+              <div v-if="isAnalyzing" class="flex items-center gap-3 text-purple-400/50 italic text-[10px] animate-pulse">
+                <Loader2 :size="14" class="animate-spin" />
+                PARSING_BUFFER_FOR_KNOWN_VECTORS...
+              </div>
+
+              <div v-else-if="aiOutput" class="text-gray-300 text-xs leading-relaxed font-mono whitespace-pre-wrap border-l border-purple-500/50 pl-4">
+                 {{ aiOutput }}<span v-if="isTyping" class="w-1.5 h-3 bg-purple-500 inline-block ml-1 animate-pulse"></span>
+              </div>
+
+              <div v-else class="text-gray-800 text-[9px] uppercase tracking-widest italic">
+                Neural link standby...
+              </div>
             </div>
           </div>
         </main>
@@ -147,7 +154,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ChevronLeft, Activity, Zap, Loader2, Radar, BookOpen, BrainCircuit, X, ShieldAlert } from 'lucide-vue-next';
+import { useRouter } from 'vue-router';
+import { ChevronLeft, Zap, Loader2, Radar, BookOpen, BrainCircuit, X, ShieldAlert } from 'lucide-vue-next';
+import { analyzeNmapOutput } from '~/utils/aiEngine';
 
 const router = useRouter();
 const target = ref('');
@@ -157,6 +166,10 @@ const output = ref('');
 const isRunning = ref(false);
 const executedCmd = ref('');
 const showExitModal = ref(false);
+
+const aiOutput = ref('');
+const isAnalyzing = ref(false);
+const isTyping = ref(false);
 
 const scanModes = [
   { id: 'quick', label: 'Quick Scan' },
@@ -190,36 +203,32 @@ const fullUsageDoc = {
   ]
 };
 
-const handleBackClick = () => {
-  if (isRunning.value) { showExitModal.value = true; } 
-  else { router.push('/recon'); }
-};
+const handleBackClick = () => isRunning.value ? (showExitModal.value = true) : router.push('/recon');
+const confirmExit = async () => { isRunning.value = false; showExitModal.value = false; router.push('/recon'); };
+const cancelScan = () => { isRunning.value = false; output.value += "\n\n[SYSTEM]: SIGINT RECEIVED. ENGINE SHUTDOWN."; };
 
-const confirmExit = async () => {
-  await cancelScan();
-  showExitModal.value = false;
-  router.push('/recon');
-};
-
-const cancelScan = async () => {
-  if (!target.value) return;
-  try {
-    await $fetch('/api/recon', {
-      method: 'POST',
-      body: { action: 'cancel', target: target.value }
-    });
-    output.value += "\n\n[SYSTEM]: SIGINT RECEIVED. ENGINE SHUTDOWN.";
-  } catch (e) {
-    console.error("Abort failed", e);
-  } finally {
-    isRunning.value = false;
-  }
+const runTypewriter = (text: string) => {
+  aiOutput.value = '';
+  isTyping.value = true;
+  let i = 0;
+  const speed = 25;
+  const type = () => {
+    if (i < text.length) {
+      aiOutput.value += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    } else {
+      isTyping.value = false;
+    }
+  };
+  type();
 };
 
 const executeScan = async () => {
   if (!target.value) return;
   isRunning.value = true;
   output.value = '';
+  aiOutput.value = '';
 
   try {
     const data: any = await $fetch('/api/recon', {
@@ -235,6 +244,13 @@ const executeScan = async () => {
     if (data.success) {
       output.value = data.output;
       executedCmd.value = data.command_executed;
+
+      isAnalyzing.value = true;
+      setTimeout(() => {
+        isAnalyzing.value = false;
+        const analysis = analyzeNmapOutput(data.output);
+        runTypewriter(analysis);
+      }, 1500);
     } else {
       output.value = `[ENGINE_ERROR]: ${data.error}`;
     }
@@ -247,37 +263,18 @@ const executeScan = async () => {
 </script>
 
 <style scoped>
-.cyber-input { @apply w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 focus:border-cyan-500/50 focus:bg-cyan-500/[0.04] outline-none transition-all text-cyan-400 font-bold placeholder-white/10 shadow-inner; }
-.mode-tab { @apply p-3 rounded-xl border border-white/5 bg-white/[0.02] text-[9px] font-black uppercase tracking-widest text-gray-500 transition-all hover:border-cyan-500/30; }
+.cyber-input { @apply w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 focus:border-cyan-500/50 outline-none transition-all text-cyan-400 font-bold placeholder-white/10 shadow-inner; }
+.mode-tab { @apply p-3 rounded-xl border border-white/5 bg-white/[0.02] text-[9px] font-black uppercase text-gray-500 hover:border-cyan-500/30 transition-all; }
 .mode-tab.active { @apply bg-cyan-600 border-cyan-400 text-white shadow-[0_0_20px_rgba(6,182,212,0.4)]; }
 .execute-trigger { @apply py-4 bg-cyan-600 hover:bg-cyan-500 text-black font-black uppercase tracking-[0.3em] rounded-xl transition-all flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-cyan-900/20; }
-
 .custom-scroll::-webkit-scrollbar { width: 3px; }
 .custom-scroll::-webkit-scrollbar-thumb { background: #06b6d444; border-radius: 10px; }
 
-/* ENHANCED ANIMATIONS */
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.15); }
-}
-@keyframes drift {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(40px, 30px) rotate(5deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-@keyframes shimmer {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(100%); }
-}
-
-.animate-pulse-slow { animation: pulse-slow 10s infinite ease-in-out; }
-.animate-drift { animation: drift 15s infinite ease-in-out; }
-.animate-shimmer { animation: shimmer 1.5s infinite; }
-@keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.animate-spin-slow { animation: spin-slow 10s linear infinite; }
+@keyframes pulse-slow { 0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.1); } }
+.animate-pulse-slow { animation: pulse-slow 6s infinite ease-in-out; }
+.animate-spin-slow { animation: spin 10s linear infinite; }
 @keyframes reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .animate-reveal { animation: reveal 0.4s ease-out forwards; }
-
 .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>

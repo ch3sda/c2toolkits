@@ -4,11 +4,11 @@
     <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
       <div class="absolute inset-0 bg-gradient-to-b from-[#121212] via-[#0d0d0d] to-[#151515]" />
       
-      <div class="absolute top-[-5%] left-[10%] w-[60%] h-[60%] bg-purple-600/25 blur-[140px] rounded-full animate-pulse-slow" />
-      <div class="absolute bottom-[10%] right-[-5%] w-[50%] h-[50%] bg-purple-500/20 blur-[130px] rounded-full animate-drift" />
-      <div class="absolute top-[30%] left-[-10%] w-[40%] h-[40%] bg-cyan-500/10 blur-[120px] rounded-full animate-pulse-slow" style="animation-delay: 2s" />
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(168,85,247,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,0.15)_1px,transparent_1px)] bg-[size:50px_50px] opacity-60" />
       
-      <div class="absolute inset-0 bg-[linear-gradient(rgba(168,85,247,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,0.08)_1px,transparent_1px)] bg-[size:50px_50px] animate-grid opacity-60" />
+      <div class="absolute top-[-5%] left-[10%] w-[60%] h-[60%] bg-purple-600/25 blur-[140px] rounded-full animate-pulse-slow" />
+      <div class="absolute bottom-[10%] right-[-5%] w-[50%] h-[50%] bg-purple-500/20 blur-[130px] rounded-full animate-pulse-slow" style="animation-delay: 4s" />
+      <div class="absolute top-[30%] left-[-10%] w-[40%] h-[40%] bg-cyan-500/10 blur-[120px] rounded-full animate-pulse-slow" style="animation-delay: 2s" />
       
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0d0d0d_80%)] opacity-40" />
     </div>
@@ -175,33 +175,23 @@ const process = async (mode: 'hash' | 'encode') => {
 </script>
 
 <style scoped>
-/* BACKGROUND ANIMATIONS */
-@keyframes grid { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
-.animate-grid { animation: grid 12s linear infinite; }
-
+/* BACKGROUND ANIMATIONS - Optimized scale and opacity pulse */
 @keyframes pulse-slow {
-  0%, 100% { opacity: 0.4; transform: scale(1) translate(0, 0); }
-  50% { opacity: 0.7; transform: scale(1.1) translate(20px, 10px); }
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
 }
 .animate-pulse-slow { animation: pulse-slow 10s infinite ease-in-out; }
-
-@keyframes drift {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-30px, -20px); }
-  100% { transform: translate(0, 0); }
-}
-.animate-drift { animation: drift 15s infinite ease-in-out; }
 
 @keyframes scan { 0% { top: -20%; } 100% { top: 120%; } }
 .scan-line {
   position: absolute;
   left: 0; right: 0; height: 120px;
-  background: linear-gradient(transparent, rgba(168,85,247,0.1), transparent);
+  background: linear-gradient(transparent, rgba(168,85,247,0.08), transparent);
   animation: scan 12s linear infinite;
   pointer-events: none; z-index: 5;
 }
 
-/* LIGHTER UI COMPONENTS */
+/* UI COMPONENTS */
 .cyber-input {
   @apply w-full h-40 bg-white/[0.05] border border-white/20 rounded-xl p-6 text-sm outline-none transition-all 
          placeholder-white/20 font-mono text-white focus:bg-white/[0.08] backdrop-blur-xl shadow-lg;

@@ -4,13 +4,10 @@
     <div class="fixed inset-0 z-0">
       <div class="absolute inset-0 bg-[#050505]" />
       
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(147,51,234,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.15)_1px,transparent_1px)] bg-[size:60px_60px] opacity-60" />
+      
       <div class="absolute top-[-10%] left-[-5%] w-[60%] h-[60%] bg-purple-600/20 blur-[130px] rounded-full animate-pulse-slow" />
-      
-      <div class="absolute bottom-[5%] right-[-5%] w-[55%] h-[55%] bg-blue-600/15 blur-[140px] rounded-full animate-drift" />
-      
-      <div class="absolute top-[20%] right-[15%] w-[30%] h-[30%] bg-blue-300/5 blur-[100px] rounded-full animate-pulse-slow" style="animation-delay: 3s" />
-
-      <div class="absolute inset-0 bg-[linear-gradient(rgba(147,51,234,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.07)_1px,transparent_1px)] bg-[size:60px_60px] animate-grid opacity-50" />
+      <div class="absolute bottom-[5%] right-[-5%] w-[55%] h-[55%] bg-blue-600/15 blur-[140px] rounded-full animate-pulse-slow" style="animation-delay: 2s" />
       
       <div class="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
     </div>
@@ -223,27 +220,17 @@ const features = [
 </script>
 
 <style scoped>
-/* BACKGROUND & GRID */
-@keyframes grid { 0% { transform: translateY(0); } 100% { transform: translateY(60px); } }
-.animate-grid { animation: grid 12s linear infinite; }
-
+/* BACKGROUND - Stronger static grid visibility */
 @keyframes pulse-slow {
   0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
 }
-.animate-pulse-slow { animation: pulse-slow 10s infinite ease-in-out; }
-
-@keyframes drift {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(30px, 20px) rotate(3deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-.animate-drift { animation: drift 15s infinite ease-in-out; }
+.animate-pulse-slow { animation: pulse-slow 8s infinite ease-in-out; }
 
 @keyframes scan { 0% { top: -20%; } 100% { top: 120%; } }
 .scan-line {
   position: absolute; left: 0; right: 0; height: 180px;
-  background: linear-gradient(transparent, rgba(59,130,246,0.06), transparent);
+  background: linear-gradient(transparent, rgba(59,130,246,0.08), transparent);
   animation: scan 12s linear infinite; pointer-events: none; z-index: 5;
 }
 
