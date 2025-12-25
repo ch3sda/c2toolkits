@@ -51,19 +51,19 @@
           <div class="p-6 bg-white/[0.04] border border-white/10 rounded-2xl space-y-4 shadow-2xl backdrop-blur-xl">
             <div class="space-y-2">
               <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em]">Target_Uplink</label>
-              <input v-model="target" placeholder="e.g. 127.0.0.1" class="cyber-input" />
+              <input v-model="target" :disabled="isRunning" placeholder="e.g. 127.0.0.1" class="cyber-input" />
             </div>
 
             <div class="grid grid-cols-2 gap-2">
-              <button v-for="mode in scanModes" :key="mode.id" @click="selectedMode = mode.id"
-                :class="['mode-tab', selectedMode === mode.id ? 'active' : '']">
+              <button v-for="mode in scanModes" :key="mode.id" @click="!isRunning && (selectedMode = mode.id)"
+                :class="['mode-tab', selectedMode === mode.id ? 'active' : '', isRunning ? 'opacity-50 cursor-not-allowed' : '']">
                 {{ mode.label }}
               </button>
             </div>
 
             <div v-if="selectedMode === 'custom'" class="animate-reveal space-y-2">
               <label class="text-[9px] font-black text-cyan-500/50 uppercase tracking-[0.2em]">Manual_Injection_Flags</label>
-              <input v-model="customFlags" placeholder="-sV -Pn --script=vuln" class="cyber-input border-cyan-500/30 text-xs" />
+              <input v-model="customFlags" :disabled="isRunning" placeholder="-sV -Pn --script=vuln" class="cyber-input border-cyan-500/30 text-xs" />
             </div>
 
             <div class="flex gap-2">
@@ -95,7 +95,6 @@
         </aside>
 
         <main class="col-span-12 lg:col-span-8 space-y-6">
-          
           <div class="flex flex-col h-[400px] bg-black/70 border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-2xl relative group">
             <div class="absolute inset-0 bg-cyan-500/[0.03] pointer-events-none"></div>
             
@@ -105,7 +104,7 @@
                 Standard_Output // Nmap
                 <span v-if="isRunning" class="text-red-500 animate-pulse text-[8px] border border-red-500/30 px-1 rounded uppercase ml-2">SIGINT_Attached</span>
               </span>
-              <button @click="output = ''" class="text-[9px] text-red-500/50 hover:text-red-500 transition-colors uppercase font-black">Flush_Buffer</button>
+              <button @click="output = ''" :disabled="isRunning" class="text-[9px] text-red-500/50 hover:text-red-500 transition-colors uppercase font-black">Flush_Buffer</button>
             </div>
             
             <div class="p-6 overflow-y-auto custom-scroll flex-grow font-mono text-sm relative z-10">
@@ -125,20 +124,20 @@
             </div>
           </div>
 
-          <div class="p-6 bg-purple-500/[0.08] border border-purple-500/30 rounded-2xl relative backdrop-blur-md overflow-hidden shadow-lg shadow-purple-500/5">
-            <div class="absolute -right-8 -top-8 w-32 h-32 bg-purple-600/20 blur-3xl rounded-full"></div>
-            <h3 class="text-purple-400 text-[10px] font-black tracking-[0.3em] uppercase mb-4 flex items-center gap-2">
+          <div class="p-6 bg-cyan-500/[0.08] border border-cyan-500/30 rounded-2xl relative backdrop-blur-md overflow-hidden shadow-lg shadow-purple-500/5">
+            <div class="absolute -right-8 -top-8 w-32 h-32 bg-cyan-600/20 blur-3xl rounded-full"></div>
+            <h3 class="text-cyan-400 text-[10px] font-black tracking-[0.3em] uppercase mb-4 flex items-center gap-2">
               <BrainCircuit :size="14" /> AI_Heuristic_Engine
             </h3>
             
             <div class="min-h-[120px]">
-              <div v-if="isAnalyzing" class="flex items-center gap-3 text-purple-400/50 italic text-[10px] animate-pulse">
+              <div v-if="isAnalyzing" class="flex items-center gap-3 text-cyan-400/50 italic text-[10px] animate-pulse">
                 <Loader2 :size="14" class="animate-spin" />
                 PARSING_BUFFER_FOR_KNOWN_VECTORS...
               </div>
 
-              <div v-else-if="aiOutput" class="text-gray-300 text-xs leading-relaxed font-mono whitespace-pre-wrap border-l border-purple-500/50 pl-4">
-                 {{ aiOutput }}<span v-if="isTyping" class="w-1.5 h-3 bg-purple-500 inline-block ml-1 animate-pulse"></span>
+              <div v-else-if="aiOutput" class="text-gray-300 text-xs leading-relaxed font-mono whitespace-pre-wrap border-l border-cyan-500/50 pl-4">
+                 {{ aiOutput }}<span v-if="isTyping" class="w-1.5 h-3 bg-cyan-500 inline-block ml-1 animate-pulse"></span>
               </div>
 
               <div v-else class="text-gray-800 text-[9px] uppercase tracking-widest italic">
@@ -156,7 +155,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ChevronLeft, Zap, Loader2, Radar, BookOpen, BrainCircuit, X, ShieldAlert } from 'lucide-vue-next';
-import { analyzeNmapOutput } from '~/utils/aiEngine';
+import { extractNmapFeatures } from '~/utils/nmapEngine'; 
 
 const router = useRouter();
 const target = ref('');
@@ -211,7 +210,7 @@ const runTypewriter = (text: string) => {
   aiOutput.value = '';
   isTyping.value = true;
   let i = 0;
-  const speed = 25;
+  const speed = 15;
   const type = () => {
     if (i < text.length) {
       aiOutput.value += text.charAt(i);
@@ -225,39 +224,66 @@ const runTypewriter = (text: string) => {
 };
 
 const executeScan = async () => {
-  if (!target.value) return;
+  if (!target.value || isRunning.value) return;
   isRunning.value = true;
   output.value = '';
-  aiOutput.value = '';
+  aiOutput.value = ''; // Clear AI box
 
   try {
+    // 1. Run Nmap
     const data: any = await $fetch('/api/recon', {
       method: 'POST',
-      body: { 
-        tool: 'nmap', 
-        target: target.value, 
-        mode: selectedMode.value, 
-        customFlags: customFlags.value 
-      }
+      body: { tool: 'nmap', target: target.value, mode: selectedMode.value, customFlags: customFlags.value }
     });
     
     if (data.success) {
       output.value = data.output;
       executedCmd.value = data.command_executed;
 
+      // 2. Start Streaming AI Analysis
       isAnalyzing.value = true;
-      setTimeout(() => {
-        isAnalyzing.value = false;
-        const analysis = analyzeNmapOutput(data.output);
-        runTypewriter(analysis);
-      }, 1500);
-    } else {
-      output.value = `[ENGINE_ERROR]: ${data.error}`;
+      const features = extractNmapFeatures(data.output);
+
+      const response = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ featureData: features })
+      });
+
+      if (!response.body) throw new Error("No response body");
+      
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      isAnalyzing.value = false; // Hide the "Parsing..." loader as soon as stream starts
+      isTyping.value = true;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        
+        // Ollama sends multiple JSON objects in one chunk sometimes
+        const lines = chunk.split('\n');
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          try {
+            const json = JSON.parse(line);
+            if (json.response) {
+              aiOutput.value += json.response; // Real-time append
+            }
+          } catch (e) {
+            console.error("Error parsing stream chunk", e);
+          }
+        }
+      }
+      isTyping.value = false;
     }
   } catch (e: any) {
-    output.value = `[FATAL_UPLINK_FAILURE]: ${e.message}`;
+    output.value = `[FATAL_ERROR]: ${e.message}`;
   } finally {
     isRunning.value = false;
+    isAnalyzing.value = false;
   }
 };
 </script>

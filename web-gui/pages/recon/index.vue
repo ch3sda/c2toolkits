@@ -5,9 +5,7 @@
       <div class="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:50px_50px] animate-grid opacity-30" />
       <div class="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-900/10 blur-[140px] rounded-full animate-pulse" />
     </div>
-    
-    <div class="scan-line opacity-40" />
-
+  
     <div class="relative z-20 container mx-auto px-8 py-12 max-w-[1440px]">
       <header class="mb-10 border-b border-white/5 pb-10 flex flex-col md:flex-row md:items-end justify-between gap-8 animate-slide-down">
         <div class="space-y-6">
@@ -57,7 +55,7 @@
              </div>
           </div>
 
-          <div v-if="toolStatus[tool.command]" class="absolute top-0 left-0 w-full h-[1px] bg-cyan-500 opacity-0 group-hover:opacity-100 group-hover:animate-scan-line-fast" />
+          <div v-if="toolStatus[tool.command]" class="absolute top-0 left-0 w-full h-[1px] bg-cyan-500 opacity-0 group-hover:opacity-100t" />
 
           <div v-if="tool.tags?.length" class="absolute top-6 right-6 flex space-x-2">
             <span 
@@ -137,11 +135,11 @@ const router = useRouter();
 const { toolStatus, checkLocalInstallation, loading } = useTerminal();
 
 const reconTools = [
-  { name: 'Nmap Scanner', icon: Search, desc: 'Advanced port scanning, service detection & network discovery protocols.', command: 'nmap', tags: [{ label: 'AI_SCAN', color: 'bg-red-600' }, { label: 'NET_DISCO', color: 'bg-cyan-500' }], route: '/recon/nmap' },
-  { name: 'Gobuster', icon: Wifi, desc: 'High-speed URIs, DNS subdomains and virtual host name brute-forcing.', command: 'gobuster', tags: [{ label: 'AI_FUZZ', color: 'bg-red-600' }, { label: 'WEB_RECON', color: 'bg-yellow-500' }], route: '/recon/gobuster' },
-  { name: 'SQLMap', icon: Database, desc: 'Automatic SQL injection and database takeover tool with payload generation.', command: 'sqlmap', tags: [{ label: 'DB_EXPLOIT', color: 'bg-purple-500' }], route: '/recon/sqlmap' },
-  { name: 'Nikto', icon: Shield, desc: 'Comprehensive web server scanner for dangerous files and outdated software.', command: 'nikto', tags: [{ label: 'SRV_AUDIT', color: 'bg-cyan-500' }], route: '/recon/nikto' },
-  { name: 'Subfinder', icon: Activity, desc: 'Passive subdomain discovery tool that discovers valid subdomains for websites.', command: 'subfinder', tags: [{ label: 'SUB_ENUM', color: 'bg-pink-500' }], route: '/recon/subfinder' }
+  { name: 'Nmap Scanner', icon: Search, desc: 'Advanced port scanning, service detection & network discovery protocols.', command: 'nmap', tags: [{ label: 'AI', color: 'bg-red-600' }, { label: 'NET_DISCO', color: 'bg-cyan-500' }], route: '/recon/nmap' },
+  { name: 'Gobuster', icon: Wifi, desc: 'High-speed URIs, DNS subdomains and virtual host name brute-forcing.', command: 'gobuster', tags: [{ label: 'AI', color: 'bg-red-600' }, { label: 'WEB_RECON', color: 'bg-yellow-500' }], route: '/recon/gobuster' },
+  { name: 'SQLMap', icon: Database, desc: 'Automatic SQL injection and database takeover tool with payload generation.', command: 'sqlmap', tags: [{ label: 'AI', color: 'bg-red-600' }, { label: 'DB_EXPLOIT', color: 'bg-purple-500' }], route: '/recon/sqlmap' },
+  { name: 'Nikto', icon: Shield, desc: 'Comprehensive web server scanner for dangerous files and outdated software.', command: 'nikto', tags: [{ label: 'AI', color: 'bg-red-600' },{ label: 'SRV_AUDIT', color: 'bg-cyan-500' }], route: '/recon/nikto' },
+  { name: 'Subfinder', icon: Activity, desc: 'Passive subdomain discovery tool that discovers valid subdomains for websites.', command: 'subfinder', tags: [{ label: 'AI', color: 'bg-red-600' }, { label: 'SUB_ENUM', color: 'bg-pink-500' }], route: '/recon/subfinder' }
 ];
 
 onMounted(async () => {
@@ -162,22 +160,9 @@ const selectReconTool = (tool: any) => {
 @keyframes grid { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
 .animate-grid { animation: grid 15s linear infinite; }
 
-@keyframes scan { 0% { top: -20%; } 100% { top: 120%; } }
-.scan-line {
-  position: absolute; left: 0; right: 0; height: 150px;
-  background: linear-gradient(transparent, rgba(6,182,212,0.05), transparent);
-  animation: scan 10s linear infinite; pointer-events: none; z-index: 5;
-}
-
 @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .animate-spin-slow { animation: spin-slow 8s linear infinite; }
 
-@keyframes scan-line-fast {
-  0% { transform: translateY(0); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateY(320px); opacity: 0; }
-}
-.group-hover\:animate-scan-line-fast { animation: scan-line-fast 1s linear infinite; }
 
 .cyber-card {
   @apply bg-black/40 border border-white/5 rounded-[2.5rem] p-8 backdrop-blur-2xl shadow-2xl relative;

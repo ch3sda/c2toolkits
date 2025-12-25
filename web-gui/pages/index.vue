@@ -3,12 +3,9 @@
     
     <div class="fixed inset-0 z-0">
       <div class="absolute inset-0 bg-[#050505]" />
-      
       <div class="absolute inset-0 bg-[linear-gradient(rgba(147,51,234,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.15)_1px,transparent_1px)] bg-[size:60px_60px] opacity-60" />
-      
       <div class="absolute top-[-10%] left-[-5%] w-[60%] h-[60%] bg-purple-600/20 blur-[130px] rounded-full animate-pulse-slow" />
       <div class="absolute bottom-[5%] right-[-5%] w-[55%] h-[55%] bg-blue-600/15 blur-[140px] rounded-full animate-pulse-slow" style="animation-delay: 2s" />
-      
       <div class="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
     </div>
     
@@ -101,19 +98,24 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div v-for="(item, i) in features" :key="item.title" class="feature-card group" :style="{ transitionDelay: `${i * 100}ms` }">
+          <div 
+            v-for="(item, i) in features" 
+            :key="item.title" 
+            class="feature-card group reveal-item" 
+            :style="{ transitionDelay: `${i * 100}ms` }"
+          >
             <div class="relative z-10">
-              <div class="w-14 h-14 mb-8 bg-white/[0.03] border border-white/10 rounded-xl flex items-center justify-center group-hover:border-blue-400/50 group-hover:bg-blue-600/10 transition-all duration-500">
-                <component :is="item.icon" :size="28" class="text-blue-300 group-hover:text-white transition-colors" />
+              <div class="w-14 h-14 mb-8 bg-white/[0.03] border border-white/10 rounded-xl flex items-center justify-center group-hover:border-blue-400/50 group-hover:bg-blue-600/10 transition-all duration-700 ease-out">
+                <component :is="item.icon" :size="28" class="text-blue-300 group-hover:text-white transition-colors duration-500" />
               </div>
-              <h3 class="font-black text-2xl mb-3 text-white tracking-tighter uppercase italic group-hover:text-blue-400 transition-colors">
+              <h3 class="font-black text-2xl mb-3 text-white tracking-tighter uppercase italic group-hover:text-blue-400 transition-colors duration-500">
                 {{ item.title }}
               </h3>
-              <p class="text-[13px] text-gray-500 leading-relaxed uppercase tracking-wide group-hover:text-gray-300">
+              <p class="text-[13px] text-gray-500 leading-relaxed uppercase tracking-wide group-hover:text-gray-300 transition-colors duration-500">
                 {{ item.desc }}
               </p>
             </div>
-            <div class="absolute -bottom-2 -right-2 text-white/[0.02] font-black text-8xl italic group-hover:text-blue-500/5 transition-all duration-700 pointer-events-none">
+            <div class="absolute -bottom-2 -right-2 text-white/[0.02] font-black text-8xl italic group-hover:text-blue-500/5 group-hover:-translate-y-4 transition-all duration-1000 pointer-events-none">
               0{{ i + 1 }}
             </div>
           </div>
@@ -122,7 +124,6 @@
 
       <footer class="w-full max-w-7xl mx-auto mt-10 pb-16 px-6">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-16 border-t border-white/10 pt-20 mb-20 relative">
-          
           <div class="col-span-1 lg:col-span-2 space-y-8">
             <div>
               <h3 class="text-3xl font-black italic tracking-tighter text-white uppercase mb-4">C2Toolkits</h3>
@@ -131,7 +132,6 @@
                 Local binary execution and secure cryptographic protocols.
               </p>
             </div>
-            
             <div class="flex items-center gap-6">
               <div class="relative group">
                 <img src="https://github.com/ch3sda.png" class="w-16 h-16 rounded-2xl border-2 border-blue-500/30 group-hover:border-white transition-all shadow-xl" />
@@ -199,9 +199,6 @@ import {
 } from 'lucide-vue-next'
 
 const mounted = ref(false)
-onMounted(() => { 
-  mounted.value = true 
-})
 
 const stats = [
   { label: 'Security Modules', value: '15+ Tools' },
@@ -217,10 +214,30 @@ const features = [
   { title: 'Network', desc: 'Packet inspection and port enumeration utility suites.', icon: Network },
   { title: 'Hardware', desc: 'Low-level CPU and memory analysis for exploit research.', icon: Cpu }
 ]
+
+onMounted(() => { 
+  mounted.value = true 
+
+  // Smooth Scroll Reveal Logic
+  const observerOptions = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
+})
 </script>
 
 <style scoped>
-/* BACKGROUND - Stronger static grid visibility */
+/* BACKGROUND ANIMATIONS */
 @keyframes pulse-slow {
   0%, 100% { opacity: 0.3; transform: scale(1); }
   50% { opacity: 0.6; transform: scale(1.05); }
@@ -234,6 +251,19 @@ const features = [
   animation: scan 12s linear infinite; pointer-events: none; z-index: 5;
 }
 
+/* SMOOTH REVEAL ITEMS */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-item.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 /* BUTTONS */
 .btn-cyber {
   @apply relative px-10 py-5 rounded-xl font-black text-xs tracking-[0.3em] uppercase 
@@ -243,11 +273,18 @@ const features = [
 .btn-blue { @apply bg-blue-600 border-blue-400 hover:bg-blue-500 shadow-[0_0_30px_rgba(37,99,235,0.3)]; }
 .btn-purple { @apply bg-purple-600 border-purple-400 hover:bg-purple-500 shadow-[0_0_30px_rgba(147,51,234,0.3)]; }
 
-/* CARDS */
+/* FEATURE CARDS - Premium Hover */
 .feature-card {
-  @apply relative p-10 bg-white/[0.02] border border-white/10 rounded-[2rem]
-         hover:border-blue-500/40 hover:-translate-y-3 transition-all duration-500
+  @apply relative p-10 bg-white/[0.02] border border-white/10 rounded-[2.5rem]
          backdrop-blur-3xl overflow-hidden cursor-pointer shadow-2xl;
+  transition: transform 0.7s cubic-bezier(0.2, 1, 0.3, 1), 
+              border-color 0.4s ease, 
+              background-color 0.4s ease;
+}
+
+.feature-card:hover {
+  @apply border-blue-500/40 bg-white/[0.05];
+  transform: translateY(-15px) scale(1.03);
 }
 
 .stat-card {

@@ -1,11 +1,13 @@
 <template>
   <div class="min-h-screen bg-[#050505] text-white font-mono relative overflow-hidden selection:bg-white/20">
-    <div class="fixed inset-0 z-0">
-      <div class="absolute inset-0 bg-[#050505]" />
-      <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:50px_50px] animate-grid opacity-30" />
-      <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-white/[0.03] blur-[140px] rounded-full animate-pulse-white" />
-      <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-900/10 blur-[120px] rounded-full animate-pulse" style="animation-delay: 2s" />
-    </div>
+<div class="fixed inset-0 z-0">
+  <div class="absolute inset-0 bg-[#050505]" />
+  
+  <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] opacity-30" />
+  
+  <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-white/[0.03] blur-[140px] rounded-full animate-pulse-white" />
+  <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-white/[0.02] blur-[120px] rounded-full animate-pulse-white" style="animation-delay: 2s" />
+</div>
     
     <div class="scan-line opacity-20" />
 

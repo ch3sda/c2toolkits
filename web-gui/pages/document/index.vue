@@ -49,8 +49,7 @@
             System_Documentation
           </h1>
           <p class="text-gray-400 leading-relaxed text-lg">
-            C2Toolkits is a curated cybersecurity arsenal designed for educational research and authorized laboratory environments. 
-            By accessing these modules, you agree to follow the <span class="text-white italic">Responsible Disclosure Protocol</span>.
+            C2Toolkits is a curated cybersecurity arsenal designed for educational research. By accessing these modules, you agree to follow the <span class="text-white italic">Responsible Disclosure Protocol</span>.
           </p>
         </section>
 
@@ -73,6 +72,68 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </section>
+
+        <section id="ai-core" class="mb-20 scroll-mt-24">
+          <h2 class="text-xl font-black italic uppercase tracking-[0.2em] mb-8 flex items-center gap-3">
+            <Brain :size="20" class="text-purple-500" /> Intelligence_Core
+          </h2>
+          
+          <div class="space-y-8">
+            <p class="text-gray-400 leading-relaxed uppercase text-xs tracking-widest">
+              C2Toolkits integrates local Large Language Models (LLM) via <span class="text-white">Ollama</span> to provide real-time analysis of security data.
+            </p>
+
+            <div class="bg-purple-500/5 border border-purple-500/20 rounded-2xl p-8">
+              <h3 class="text-sm font-black text-white uppercase tracking-widest mb-4">Step 01: Host Setup</h3>
+              <p class="text-xs text-gray-500 mb-6">To use the AI features, you must have Ollama installed and running locally on port 11434.</p>
+              <div class="bg-black border border-purple-500/30 p-4 rounded-lg flex items-center justify-between group">
+                <code class="text-purple-400 text-sm">ollama serve</code>
+                <Zap :size="14" class="text-purple-500 animate-pulse" />
+              </div>
+            </div>
+
+            <div id="ai-models" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="p-6 bg-white/[0.02] border border-white/10 rounded-2xl hover:border-purple-500/50 transition-all">
+                <h4 class="text-xs font-black text-white uppercase mb-4 flex items-center gap-2">
+                  <Cpu :size="16" class="text-purple-500" /> Qwen2.5:7b
+                </h4>
+                <div class="space-y-3">
+                  <p class="text-[10px] text-green-400 font-bold uppercase tracking-tighter">● Pro: Deep technical understanding</p>
+                  <p class="text-[10px] text-red-400 font-bold uppercase tracking-tighter">● Con: Requires higher system resources</p>
+                  <p class="text-[10px] text-gray-500 italic mt-2">Best for: Detailed vulnerability reports.</p>
+                </div>
+              </div>
+
+              <div class="p-6 bg-white/[0.02] border border-white/10 rounded-2xl hover:border-blue-500/50 transition-all">
+                <h4 class="text-xs font-black text-white uppercase mb-4 flex items-center gap-2">
+                  <Zap :size="16" class="text-blue-500" /> Llama3.2:3b
+                </h4>
+                <div class="space-y-3">
+                  <p class="text-[10px] text-green-400 font-bold uppercase tracking-tighter">● Pro: High speed / Low RAM usage</p>
+                  <p class="text-[10px] text-red-400 font-bold uppercase tracking-tighter">● Con: May miss nuanced details</p>
+                  <p class="text-[10px] text-gray-500 italic mt-2">Best for: Fast summary & general tasks.</p>
+                </div>
+              </div>
+            </div>
+
+            <div id="ai-config" class="bg-black/40 border border-white/5 rounded-2xl p-6">
+              <div class="flex items-start gap-4">
+                <div class="p-3 bg-white/[0.03] rounded-lg">
+                  <Code :size="20" class="text-purple-400" />
+                </div>
+                <div>
+                  <h4 class="text-xs font-black text-white uppercase mb-2">Manual Configuration</h4>
+                  <p class="text-[10px] text-gray-500 leading-relaxed mb-4 uppercase font-bold">
+                    You can switch models or customize the analysis logic at the following endpoint:
+                  </p>
+                  <code class="block bg-black p-3 rounded border border-purple-500/20 text-purple-400 text-xs italic">
+                    /server/api/ai/analyze.post.ts
+                  </code>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -123,7 +184,7 @@
             <div>
               <h4 class="text-red-500 font-black uppercase tracking-[0.3em] mb-2">Legal_Mandate</h4>
               <p class="text-xs text-gray-500 leading-relaxed uppercase tracking-widest font-bold">
-                The author (@ch3sda) assumes no liability for system misuse. Unauthorized access to computer networks is strictly prohibited. This framework is a conceptual tool for learning methodology and authorized auditing only.
+                The author (@ch3sda) assumes no liability for system misuse. This framework is a conceptual tool for learning methodology and authorized auditing only.
               </p>
             </div>
           </div>
@@ -141,7 +202,7 @@
 <script setup lang="ts">
 import { 
   Terminal, Folder, Cpu, ShieldCheck, 
-  Copy, ShieldAlert, Radar 
+  Copy, ShieldAlert, Radar, Brain, Zap, Code
 } from 'lucide-vue-next';
 
 const navLinks = [
@@ -150,46 +211,47 @@ const navLinks = [
     links: [
       { name: 'Prologue', id: 'prologue' },
       { name: 'Project Structure', id: 'structure' },
-      { name: 'Educational Scope', id: 'scope' }
+    ]
+  },
+  {
+    title: 'Intelligence',
+    links: [
+      { name: 'Ollama Setup', id: 'ai-core' },
+      { name: 'Model Comparison', id: 'ai-models' },
+      { name: 'Logic Customization', id: 'ai-config' }
     ]
   },
   {
     title: 'Deployment',
     links: [
-      { name: 'Requirements', id: 'setup' },
-      { name: 'CLI Installation', id: 'setup' },
-      { name: 'Web GUI Setup', id: 'gui' }
+      { name: 'CLI Setup', id: 'setup' },
+      { name: 'Web GUI Interface', id: 'gui' }
     ]
   },
   {
     title: 'Compliance',
     links: [
-      { name: 'Legal Protocol', id: 'legal' },
-      { name: 'Responsible Disclosure', id: 'legal' }
+      { name: 'Legal Protocol', id: 'legal' }
     ]
   }
 ];
 
 const structure = [
+  { dir: 'server/api/ai', purpose: 'Ollama integration & LLM analysis bridge' },
   { dir: 'encode', purpose: 'Cipher algorithms, XOR, Base64 transformation' },
   { dir: 'recon', purpose: 'Automated network discovery and scanning' },
   { dir: 'web-gui', purpose: 'Nuxt 3 dashboard and visual interface' },
-  { dir: 'docs', purpose: 'Operational manuals and reference material' },
   { dir: 'tools', purpose: 'Core Linux utilities and system scripts' }
 ];
 </script>
 
 <style scoped>
-@keyframes grid { 0% { transform: translateY(0); } 100% { transform: translateY(40px); } }
-.animate-grid { animation: grid 10s linear infinite; }
-
 @keyframes reveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .animate-reveal { animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
 @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .animate-spin-slow { animation: spin-slow 20s linear infinite; }
 
-/* Custom scrollbar for cyber feel */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.2); border-radius: 10px; }

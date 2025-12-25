@@ -14,7 +14,7 @@
             <ChevronLeft :size="12" /> RETURN_TO_ARSENAL
           </button>
           <h1 class="text-5xl font-black italic uppercase tracking-tighter flex items-center gap-3">
-            Gobuster_Dir <span class="text-xs not-italic font-light text-orange-500/30 tracking-normal pt-2">v.3.6_STABLE</span>
+            Gobuster_Dir <span class="text-xs not-italic font-light text-orange-500/30 tracking-normal pt-2">v.3.6_AI</span>
           </h1>
         </div>
         <div class="bg-orange-500/10 border border-orange-500/30 px-4 py-3 rounded-xl backdrop-blur-md flex items-center gap-4 shadow-[0_0_20px_rgba(249,115,22,0.1)]">
@@ -32,19 +32,19 @@
           <div class="p-6 bg-white/[0.04] border border-white/10 rounded-2xl space-y-4 shadow-2xl backdrop-blur-xl">
             <div class="space-y-2">
               <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em]">Target_URL</label>
-              <input v-model="target" placeholder="https://example.com" class="cyber-input-orange" />
+              <input v-model="target" :disabled="isRunning" placeholder="https://example.com" class="cyber-input-orange" />
             </div>
 
             <div class="grid grid-cols-2 gap-2">
-              <button v-for="mode in scanModes" :key="mode.id" @click="selectedMode = mode.id"
-                :class="['mode-tab-orange', selectedMode === mode.id ? 'active' : '']">
+              <button v-for="mode in scanModes" :key="mode.id" @click="!isRunning && (selectedMode = mode.id)"
+                :class="['mode-tab-orange', selectedMode === mode.id ? 'active' : '', isRunning ? 'opacity-50 cursor-not-allowed' : '']">
                 {{ mode.label }}
               </button>
             </div>
 
             <div v-if="selectedMode === 'custom'" class="animate-reveal space-y-2">
               <label class="text-[9px] font-black text-orange-500/50 uppercase tracking-[0.2em]">Manual_Injection_Flags</label>
-              <input v-model="customFlags" placeholder="dir -u http://site.com -w list.txt" class="cyber-input-orange text-xs" />
+              <input v-model="customFlags" :disabled="isRunning" placeholder="dir -u http://site.com -w list.txt" class="cyber-input-orange text-xs" />
             </div>
 
             <div class="flex gap-2">
@@ -64,6 +64,7 @@
               <div class="text-gray-500 space-y-2 uppercase">
                 <p>Common: /usr/share/seclists/.../common.txt</p>
                 <p>Medium: /usr/share/wordlists/.../2.3-medium.txt</p>
+                <p>Big: /usr/share/wordlists/.../directory-list-2.3-big.txt</p>
               </div>
             </div>
           </div>
@@ -101,12 +102,15 @@
               <BrainCircuit :size="14" /> AI_Heuristic_Engine
             </h3>
             <div class="min-h-[100px]">
-              <div v-if="isAnalyzing" class="flex items-center gap-3 text-amber-400/50 italic text-[10px] animate-pulse">
+              <div v-if="isAnalyzing && !aiOutput" class="flex items-center gap-3 text-amber-400/50 italic text-[10px] animate-pulse">
                 <Loader2 :size="14" class="animate-spin" />
                 ANALYZING_FOUND_PATHS...
               </div>
               <div v-else-if="aiOutput" class="text-gray-300 text-xs leading-relaxed font-mono whitespace-pre-wrap border-l border-amber-500/50 pl-4">
                  {{ aiOutput }}<span v-if="isTyping" class="w-1.5 h-3 bg-amber-500 inline-block ml-1 animate-pulse"></span>
+              </div>
+              <div v-else class="text-gray-800 text-[9px] uppercase tracking-widest italic">
+                Neural link standby...
               </div>
             </div>
           </div>
@@ -119,8 +123,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { ChevronLeft, Search, Loader2, Radar, BookOpen, BrainCircuit, X } from 'lucide-vue-next';
-import { analyzeGobusterOutput } from '../../../utils/gobusterAiEngine';
+import { ChevronLeft, Search, Loader2, Radar, BookOpen, BrainCircuit } from 'lucide-vue-next';
 
 const router = useRouter();
 const target = ref('');
@@ -142,12 +145,13 @@ const scanModes = [
 ];
 
 const executeScan = async () => {
-  if (!target.value) return;
+  if (!target.value || isRunning.value) return;
   isRunning.value = true;
   output.value = '';
-  aiOutput.value = '';
+  aiOutput.value = ''; 
 
   try {
+    // 1. Run Gobuster
     const data: any = await $fetch('/api/recon', {
       method: 'POST',
       body: { 
@@ -159,39 +163,59 @@ const executeScan = async () => {
     });
     
     if (data.success) {
-      // THE FIX: Clean the raw data before saving it to the UI
       const cleanData = data.output.replace(/\x1B\[[0-9;]*[a-zA-Z]/g, '');
-      
       output.value = cleanData;
       executedCmd.value = data.command_executed;
-      
+
+      // 2. Start Real-time AI Streaming
       isAnalyzing.value = true;
-      setTimeout(() => {
-        isAnalyzing.value = false;
-        // Analyze using the same clean data
-        const analysis = analyzeGobusterOutput(cleanData);
-        runTypewriter(analysis);
-      }, 1500);
+      
+      const response = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          featureData: {
+            tool: 'gobuster',
+            findings: cleanData 
+          } 
+        })
+      });
+
+      if (!response.body) throw new Error("No response body");
+      
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      
+      isAnalyzing.value = false; // Hide "Analyzing..." as soon as stream hits
+      isTyping.value = true;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          try {
+            const json = JSON.parse(line);
+            if (json.response) {
+              aiOutput.value += json.response;
+            }
+          } catch (e) {
+            // Partial JSON handle
+          }
+        }
+      }
+      isTyping.value = false;
     }
   } catch (e: any) {
-    output.value = `[FATAL]: ${e.message}`;
+    output.value = `[FATAL_ERROR]: ${e.message}`;
   } finally {
     isRunning.value = false;
+    isAnalyzing.value = false;
   }
-};
-
-const runTypewriter = (text: string) => {
-  aiOutput.value = '';
-  isTyping.value = true;
-  let i = 0;
-  const type = () => {
-    if (i < text.length) {
-      aiOutput.value += text.charAt(i);
-      i++;
-      setTimeout(type, 20);
-    } else { isTyping.value = false; }
-  };
-  type();
 };
 </script>
 
@@ -199,10 +223,13 @@ const runTypewriter = (text: string) => {
 .cyber-input-orange { @apply w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 focus:border-orange-500/50 outline-none transition-all text-orange-400 font-bold placeholder-white/10 shadow-inner; }
 .mode-tab-orange { @apply p-3 rounded-xl border border-white/5 bg-white/[0.02] text-[9px] font-black uppercase text-gray-500 hover:border-orange-500/30 transition-all; }
 .mode-tab-orange.active { @apply bg-orange-600 border-orange-400 text-white shadow-[0_0_20px_rgba(249,115,22,0.4)]; }
-.execute-trigger-orange { @apply py-4 bg-orange-600 hover:bg-orange-500 text-black font-black uppercase tracking-[0.3em] rounded-xl transition-all flex items-center justify-center gap-3 disabled:opacity-50; }
+.execute-trigger-orange { @apply py-4 bg-orange-600 hover:bg-orange-500 text-black font-black uppercase tracking-[0.3em] rounded-xl transition-all flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-orange-900/20; }
 .custom-scroll::-webkit-scrollbar { width: 3px; }
 .custom-scroll::-webkit-scrollbar-thumb { background: #f9731644; border-radius: 10px; }
+
 @keyframes pulse-slow { 0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.1); } }
 .animate-pulse-slow { animation: pulse-slow 6s infinite ease-in-out; }
 .animate-spin-slow { animation: spin 10s linear infinite; }
+@keyframes reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-reveal { animation: reveal 0.4s ease-out forwards; }
 </style>

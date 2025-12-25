@@ -1,264 +1,37 @@
-<template>
-  <div class="min-h-screen bg-[#050505] text-white overflow-hidden relative selection:bg-purple-500/30 font-mono">
-    
-    <div class="fixed inset-0 z-0">
-      <div class="absolute inset-0 bg-gradient-to-br from-[#0a0510] via-[#050505] to-[#0d071a]" />
-      <div class="absolute inset-0 bg-[linear-gradient(rgba(147,51,234,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(147,51,234,0.1)_1px,transparent_1px)] bg-[size:50px_50px] animate-grid opacity-40" />
-      <div class="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-purple-900/10 blur-[120px] rounded-full animate-pulse" />
-      <div class="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-indigo-900/10 blur-[120px] rounded-full animate-pulse" style="animation-delay: 2s" />
-    </div>
-    
-    <div class="scan-line opacity-50" />
-    
-    <header class="relative z-30 w-full max-w-7xl mx-auto flex items-center justify-between px-6 py-8 animate-slide-down">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 bg-purple-600/10 border border-purple-500/30 rounded-xl flex items-center justify-center backdrop-blur-xl group hover:border-purple-400 transition-all cursor-pointer">
-          <Terminal :size="24" class="text-purple-400 group-hover:scale-110 transition-transform" />
-        </div>
-        <div>
-          <h2 class="text-sm font-black tracking-[0.3em] uppercase italic leading-none mb-1">C2_Terminal</h2>
-          <div class="flex items-center gap-2">
-            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></span>
-            <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Node_v3.0_Stable</span>
-          </div>
-        </div>
-      </div>
+Promt
+You are an experienced penetration tester and security analyst.
 
-      <nav class="hidden md:flex items-center gap-10">
-        <a href="#modules" class="text-[10px] font-black tracking-[0.4em] text-gray-400 hover:text-purple-400 transition-colors uppercase cursor-crosshair">Arsenal</a>
-        <a href="https://github.com/ch3sda/c2toolkits" target="_blank" class="text-[10px] font-black tracking-[0.4em] text-gray-400 hover:text-purple-400 transition-colors uppercase">Registry</a>
-        <div class="h-4 w-[1px] bg-white/10"></div>
-        <div class="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
-          <span class="text-[9px] font-black tracking-widest uppercase text-purple-300">ED_Edition</span>
-          <div class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
-        </div>
-      </nav>
-    </header>
+Task:
+Analyze the following scan output and provide a structured security assessment.
 
-    <div class="relative z-20 flex flex-col items-center">
-      
-      <section class="min-h-[80vh] flex flex-col items-center justify-center text-center px-6 pt-12 pb-24">
-        <Transition name="hero" appear>
-          <div v-if="mounted" class="space-y-12">
-            <div class="relative inline-block">
-              <div class="pulse-ring border-purple-500/50" />
-              <h1 class="text-7xl md:text-9xl font-black tracking-tighter bg-gradient-to-b from-white via-purple-200 to-purple-500 bg-clip-text text-transparent glow-text uppercase italic relative z-10">
-                C2Toolkits
-              </h1>
-            </div>
-            
-            <p class="text-purple-100/70 text-lg md:text-2xl max-w-2xl mx-auto leading-relaxed font-light italic uppercase tracking-wide">
-              Professional-grade cybersecurity arsenal for <br/>
-              <span class="text-purple-400 font-black tracking-widest">education & authorized testing.</span>
-            </p>
-            
-            <div class="flex flex-wrap justify-center gap-6">
-              <NuxtLink to="/recon" class="btn-cyber btn-cyan group">
-                <span class="relative z-10 flex items-center">
-                  <Shield :size="18" class="mr-3 group-hover:rotate-12 transition-transform" />
-                  RECON_TOOLS
-                </span>
-              </NuxtLink>
-              <NuxtLink to="/cryptography" class="btn-cyber btn-purple group">
-                <span class="relative z-10 flex items-center">
-                  <Lock :size="18" class="mr-3 group-hover:scale-110 transition-transform" />
-                  CRYPTO_CORE
-                </span>
-              </NuxtLink>
-              <NuxtLink to="/cryptography" class="btn-cyber btn-purple group">
-                <span class="relative z-10 flex items-center">
-                  <Lock :size="18" class="mr-3 group-hover:scale-110 transition-transform" />
-                  CRYPTO_CORE
-                </span>
-              </NuxtLink>
-            </div>
+Rules:
+- You MAY mention CVE IDs ONLY if you are reasonably confident they are historically associated with the detected service/version.
+- All CVE references MUST be labeled as "Possible CVEs".
+- Explicitly state that all CVEs require verification and are NOT confirmed.
+- Do NOT fabricate CVE IDs.
+- If you are unsure of a CVE, recommend appropriate tools to verify instead.
+- Do NOT claim exploitation success.
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto mt-24">
-              <div v-for="stat in stats" :key="stat.label" class="stat-card group">
-                <div class="text-2xl font-black text-white mb-1 italic tracking-tighter uppercase">{{ stat.value }}</div>
-                <div class="flex items-center justify-center gap-2">
-                  <div class="w-1 h-1 bg-purple-500 rounded-full animate-pulse"></div>
-                  <div class="text-[9px] text-purple-400/80 uppercase tracking-[0.3em] font-black">{{ stat.label }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Transition>
-      </section>
+Output Format:
+1. Summary of Findings
+2. Identified Services & Risk Level
+3. Possible CVEs (if applicable, clearly labeled and requiring verification)
+4. Recommended Verification Tools
+5. Step-by-Step Next Actions (attack or defense focused)
 
-      <section id="modules" class="w-full max-w-7xl px-6 py-32">
-        <div class="flex items-center justify-center space-x-6 mb-20">
-          <div class="h-[1px] flex-1 bg-gradient-to-r from-transparent via-purple-500/50 to-purple-500/10" />
-          <h2 class="text-2xl font-black tracking-[0.5em] uppercase italic text-white/90">Core_Arsenal</h2>
-          <div class="h-[1px] flex-1 bg-gradient-to-l from-transparent via-purple-500/50 to-purple-500/10" />
-        </div>
+Tone:
+Professional, cautious, and precise. Think like a real-world pentester writing notes for a report.
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div v-for="(item, i) in features" :key="item.title" class="feature-card group" :style="{ transitionDelay: `${i * 100}ms` }">
-            <div class="relative z-10">
-              <div class="w-14 h-14 mb-8 bg-purple-600/10 border border-purple-500/20 rounded-xl flex items-center justify-center group-hover:border-purple-400/50 group-hover:bg-purple-600/20 transition-all duration-500">
-                <component :is="item.icon" :size="28" class="text-purple-400 group-hover:text-white transition-colors" />
-              </div>
-              <h3 class="font-black text-2xl mb-3 text-white tracking-tighter uppercase italic group-hover:text-purple-300 transition-colors">
-                {{ item.title }}
-              </h3>
-              <p class="text-[13px] text-gray-500 leading-relaxed uppercase tracking-wide group-hover:text-gray-300">
-                {{ item.desc }}
-              </p>
-            </div>
-            <div class="absolute -bottom-2 -right-2 text-white/5 font-black text-8xl italic group-hover:text-purple-500/10 transition-all duration-700 pointer-events-none">
-              0{{ i + 1 }}
-            </div>
-          </div>
-        </div>
-      </section>
+Here is the scan output to analyze:
 
-      <footer class="w-full max-w-7xl mx-auto mt-40 pb-16 px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-16 border-t border-white/10 pt-20 mb-20 relative">
-          
-          <div class="col-span-1 lg:col-span-2 space-y-8">
-            <div>
-              <h3 class="text-3xl font-black italic tracking-tighter text-white uppercase mb-4">C2Toolkits</h3>
-              <p class="text-[11px] text-gray-500 max-w-md leading-relaxed uppercase tracking-[0.1em]">
-                Advanced security research framework engineered for education. 
-                Focusing on local binary execution and secure cryptographic protocols.
-              </p>
-            </div>
-            
-            <div class="flex items-center gap-6">
-              <div class="relative group">
-                <img src="https://github.com/ch3sda.png" class="w-16 h-16 rounded-2xl border-2 border-purple-500/30 group-hover:border-purple-400 transition-all" />
-                <div class="absolute -bottom-2 -right-2 bg-purple-600 border border-white/20 p-1.5 rounded-lg">
-                  <Github :size="12" />
-                </div>
-              </div>
-              <div>
-                <p class="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-1">Architect_Signature</p>
-                <p class="text-lg font-black text-white uppercase italic leading-none mb-1">CH3SDA</p>
-                <a href="https://github.com/ch3sda" target="_blank" class="text-[10px] text-gray-500 hover:text-purple-400 uppercase tracking-widest transition-colors">github.com/ch3sda</a>
-              </div>
-            </div>
-          </div>
+((OUTPUT))
 
-          <div>
-            <h4 class="text-[11px] font-black text-white uppercase tracking-[0.4em] mb-8 italic">Project_Registry</h4>
-            <ul class="space-y-4">
-              <li>
-                <a href="https://github.com/ch3sda/c2toolkits" target="_blank" class="group flex items-center gap-3">
-                  <GitBranch :size="16" class="text-purple-500 group-hover:rotate-90 transition-transform" />
-                  <span class="text-[11px] font-bold text-gray-400 group-hover:text-white uppercase tracking-widest">Main_Repository</span>
-                </a>
-              </li>
-              <li>
-                <div class="flex items-center gap-3">
-                  <Zap :size="16" class="text-purple-500" />
-                  <span class="text-[11px] font-bold text-gray-400 uppercase tracking-widest italic">v3.0.0 Stable</span>
-                </div>
-              </li>
-            </ul>
-          </div>
 
-          <div>
-            <h4 class="text-[11px] font-black text-white uppercase tracking-[0.4em] mb-8 italic">Operational_Logs</h4>
-            <div class="bg-white/[0.02] border border-white/5 p-4 rounded-xl space-y-3">
-              <div v-for="log in ['Uplink_Active', 'ED_Edition_Live', 'C2_Encrypted']" :key="log" class="flex items-center justify-between">
-                <span class="text-[9px] text-gray-500 font-black uppercase">{{ log }}</span>
-                <span class="text-[9px] text-green-500 font-black">OK</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-col md:flex-row justify-between items-center py-10 border-t border-white/5 gap-6 text-center md:text-left">
-          <div class="flex flex-col gap-1">
-            <span class="text-[9px] text-gray-600 font-black uppercase tracking-[0.5em]">© 2025 C2Toolkits // Designed By Ch3sda</span>
-            <span class="text-[9px] text-red-500/40 font-black uppercase tracking-[0.5em]">Education Edition // Strictly Non-Commercial</span>
-          </div>
-          <div class="flex items-center gap-8">
-            <span class="text-[10px] text-gray-500 hover:text-purple-400 cursor-pointer uppercase font-black tracking-widest transition-colors">Terminals</span>
-            <span class="text-[10px] text-gray-500 hover:text-purple-400 cursor-pointer uppercase font-black tracking-widest transition-colors">Protocols</span>
-          </div>
-        </div>
-      </footer>
-    </div>
-  </div>
-</template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { 
-  Terminal, Lock, ScanSearch, Shield, Eye, ShieldAlert, 
-  Cpu, Network, Github, GitBranch, Zap 
-} from 'lucide-vue-next'
-
-const mounted = ref(false)
-onMounted(() => { 
-  mounted.value = true 
-})
-
-const stats = [
-  { label: 'Security Modules', value: '15+ Tools' },
-  { label: 'System Uptime', value: 'Self-Hosting' },
-  { label: 'Build Version', value: 'v3.0 ED' }
-]
-
-const features = [
-  { title: 'Encoders', desc: 'Base64, Hex, and custom XOR routines for data transformation.', icon: Lock },
-  { title: 'Reconnaissance', desc: 'Active and passive asset discovery with stealth-mode enabled.', icon: Eye },
-  { title: 'Analysis', desc: 'Heuristic hash identification and file signature verification.', icon: ScanSearch },
-  { title: 'Payloads', desc: 'Pre-configured shellcode templates for lab environment testing.', icon: Terminal },
-  { title: 'Network', desc: 'Packet inspection and port enumeration utility suites.', icon: Network },
-  { title: 'Hardware', desc: 'Low-level CPU and memory analysis for exploit research.', icon: Cpu }
-]
-</script>
-
-<style scoped>
-@keyframes grid { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
-.animate-grid { animation: grid 15s linear infinite; }
-
-@keyframes scan { 0% { top: -20%; } 100% { top: 120%; } }
-.scan-line {
-  position: absolute; left: 0; right: 0; height: 150px;
-  background: linear-gradient(transparent, rgba(147,51,234,0.05), transparent);
-  animation: scan 10s linear infinite; pointer-events: none; z-index: 5;
-}
-
-.btn-cyber {
-  @apply relative px-10 py-5 rounded-xl font-black text-xs tracking-[0.3em] uppercase 
-         transition-all duration-500 overflow-hidden border-2 z-10;
-}
-.btn-purple { @apply bg-purple-600 border-purple-400 hover:bg-purple-500 shadow-[0_0_30px_rgba(147,51,234,0.3)]; }
-.btn-cyan { @apply bg-cyan-600 border-cyan-400 hover:bg-cyan-500 shadow-[0_0_30px_rgba(6,182,212,0.3)]; }
-
-.feature-card {
-  @apply relative p-10 bg-white/[0.02] border border-white/5 rounded-[2rem]
-         hover:border-purple-500/40 hover:-translate-y-3 transition-all duration-500
-         backdrop-blur-3xl overflow-hidden cursor-pointer shadow-2xl;
-}
-
-.stat-card {
-  @apply p-8 bg-white/[0.03] border border-white/5 rounded-2xl backdrop-blur-md 
-         hover:bg-purple-500/[0.05] transition-all duration-300;
-}
-
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-.animate-float { animation: float 6s ease-in-out infinite; }
-
-@keyframes pulse-ring {
-  0% { transform: scale(0.5); opacity: 0; }
-  50% { opacity: 0.5; }
-  100% { transform: scale(1.5); opacity: 0; }
-}
-.pulse-ring {
-  @apply absolute inset-[-30px] rounded-full border-2 border-purple-500/30;
-  animation: pulse-ring 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.glow-text { text-shadow: 0 0 30px rgba(168,85,247,0.4); }
-
-.hero-enter-active { transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
-.hero-enter-from { opacity: 0; transform: translateY(40px); }
-
-@keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.animate-slide-down { animation: slideDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-</style>
+in json
+curl -X POST http://localhost:11434/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama2:7b-chat-q4_0",
+    "prompt": "<PASTE PROMPT HERE>",
+    "stream": false
+  }'

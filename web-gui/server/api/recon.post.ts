@@ -46,6 +46,38 @@ export default defineEventHandler(async (event) => {
       case 'custom': args = [...customFlags.split(' ')]; break;
       default:      args = ['dir', '-u', target];
     }
+    }else if (tool === 'subfinder') {
+      command = 'subfinder';
+      switch (mode) {
+        case 'passive': args = ['-d', target, '-silent']; break;
+        case 'all':     args = ['-d', target, '-all', '-silent']; break;
+        case 'recursive': args = ['-d', target, '-recursive', '-silent']; break;
+        case 'custom':  args = [...customFlags.split(' '), '-d', target]; break;
+        default:        args = ['-d', target];
+      }
+    } else if (tool === 'nikto') {
+    command = 'nikto';
+    switch (mode) {
+      case 'quick':    args = ['-h', target, '-Tuning', '123b']; break; // Software, interesting files, headers
+      case 'full':     args = ['-h', target, '-C', 'all']; break;       // All CGI directories
+      case 'secure':   args = ['-h', target, '-ssl']; break;            // Force SSL scan
+      case 'custom':   args = [...customFlags.split(' '), '-h', target]; break;
+      default:         args = ['-h', target, '-nossl']; 
+    }
+    // Standard Nikto hygiene flags
+    args.push('-Display', '1'); // Only show found items
+    args.push('-nointeractive');
+    }else if (tool === 'sqlmap') {
+      command = 'sqlmap';
+      // Use --batch to prevent sqlmap from hanging on interactive prompts
+      // Use --random-agent to avoid detection
+      switch (mode) {
+        case 'probe':  args = ['-u', target, '--batch', '--random-agent', '--level=1']; break;
+        case 'dbs':    args = ['-u', target, '--batch', '--random-agent', '--dbs']; break;
+        case 'tables': args = ['-u', target, '--batch', '--random-agent', '--tables']; break;
+        case 'custom': args = ['-u', target, ...customFlags.split(' '), '--batch']; break;
+        default:       args = ['-u', target, '--batch'];
+      }
   }
 
     const child = spawn(command, args);
