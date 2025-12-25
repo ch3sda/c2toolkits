@@ -72,7 +72,7 @@
               <NuxtLink to="/identifier" class="btn-cyber btn-purple group">
                 <span class="relative z-10 flex items-center">
                   <ScanSearch :size="20" class="mr-2 group-hover:rotate-180 transition-transform duration-700" />
-                  ANALYZE_OS
+                  IDENTIFIER_OS
                 </span>
               </NuxtLink>
             </div>
