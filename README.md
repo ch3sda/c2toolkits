@@ -1,6 +1,3 @@
-To use this in your GitHub repository or documentation, copy the raw code block below. I have preserved all the technical specifications, commands, and structural hierarchy from your Vue code while formatting it for high-impact Markdown readability.
-
-```markdown
 # C2_DOCS // Operational_Interface v3.0
 
 > **EDUCATION_EDITION | RESTRICTED_ACCESS**
@@ -8,7 +5,7 @@ To use this in your GitHub repository or documentation, copy the raw code block 
 
 ---
 
-## 00. System_Requirements
+## 00. 🛠️ System_Requirements
 
 | Specification | Minimum_Spec | Recommended_Spec |
 | :--- | :--- | :--- |
@@ -20,9 +17,7 @@ To use this in your GitHub repository or documentation, copy the raw code block 
 
 ---
 
-## 01. Logic_Architecture
-
-
+## 01. 🏗️ Logic_Architecture
 
 The system operates on a three-tier operational data flow:
 
@@ -32,7 +27,7 @@ The system operates on a three-tier operational data flow:
 
 ---
 
-## 02. Host_Preparation
+## 02. 🚀 Host_Preparation
 
 ### A. Install Security Tools
 The framework requires the following binary engines to be installed on the host system:
@@ -52,34 +47,30 @@ curl -fsSL [https://ollama.com/install.sh](https://ollama.com/install.sh) | sh
 
 ---
 
-## 03. System_Deployment
+## 03. 📡 System_Deployment
 
 1. **Clone Repository**
+
 ```bash
-git clone [https://github.com/ch3sda/c2toolkits.git](https://github.com/ch3sda/c2toolkits.git) && cd c2toolkits
+git clone https://github.com/ch3sda/c2toolkits && cd c2toolkits
 
 ```
 
 
-2. **Install Dependencies**
+
+2. **Install & Ignition**
+
 ```bash
 npm install
-
-```
-
-
-3. **Ignition**
-```bash
 sudo npm run dev
 
 ```
-
 
 *(Note: sudo is required for Nmap raw socket access)*
 
 ---
 
-## 04. Tool_Arsenal
+## 04. ⚔️ Tool_Arsenal
 
 | Module | Engine | Audit Capability |
 | --- | --- | --- |
@@ -90,7 +81,7 @@ sudo npm run dev
 
 ---
 
-## 05. Neural_Selection
+## 05. 🧠 Neural_Selection
 
 Select a model based on your hardware profile:
 
@@ -114,37 +105,48 @@ ollama pull [model_tag]
 
 ---
 
-## 06. Neural_Configuration
+## 06. 🧬 AI_Parsing_Examples
 
-To adjust the logic engine, modify `/server/api/ai/analyze.post.ts`:
+The Neural Engine converts raw terminal noise into structured attack vectors.
 
-```typescript
-// Modify the model parameter to switch between Qwen, DeepSeek, or Phi
-const response = await fetch('http://localhost:11434/api/generate', {
-  method: 'POST',
-  body: JSON.stringify({
-    model: "qwen2.5:7b", // Options: "deepseek-r1:8b" | "phi3.5"
-    prompt: prompt,
-    stream: true,
-  })
-});
+### Nmap Log Interpretation
 
-```
+**Raw Input:** `80/tcp open http Apache 2.4.41`
+**AI Insight:** > ⚠️ **Critical:** Apache 2.4.41 is vulnerable to CVE-2021-41773 (Path Traversal). Recommendation: Test for `/cgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd`.
 
-> **PRO_TIP:** For advanced reasoning during CTF operations, swap to `deepseek-r1:8b`.
+### SQLmap Data Extraction
+
+**Raw Input:** `[INFO] the back-end DBMS is MySQL >= 5.6`
+**AI Insight:**
+
+> 🔍 **Strategy:** Back-end confirmed as MySQL. Lateral movement possible via `FILE` privilege. Attempt `--os-shell` if user is `root@localhost`.
 
 ---
 
-## 07. Tactical_Execution
+## 07. 🛡️ LLM_Prompt_Hardening
 
-1. Navigate to `/recon` and input your target IP or URL.
-2. Initiate a **Quick Scan** to establish a baseline handshake.
-3. Wait for **Standard_Output** to finalize the raw logs.
-4. Trigger the **Neural Heuristic** button for AI-driven audit.
+To prevent model hallucination and ensure strict security output, the following system prompt constraints are active:
+
+### SYSTEM_PROMPT_PROTOCOL
+- **Role:** Professional Cybersecurity Auditor.
+- **Constraint:** Output MUST be in JSON format.
+- **Safety:** Do not provide remediation advice unless requested.
+- **Logic:** Rank vulnerabilities by CVSS v3 score only.
+- **Verification:** Cross-reference port findings with known exploit-db entries.
+
 
 ---
 
-## 08. Debug_Protocols
+## 08. 🕹️ Tactical_Execution
+
+1. **Recon:** Navigate to `/recon` and input your target IP or URL.
+2. **Handshake:** Initiate a Quick Scan to establish a baseline.
+3. **Logs:** Wait for Standard_Output to finalize the raw logs.
+4. **Audit:** Trigger the Neural Heuristic button for AI-driven audit.
+
+---
+
+## 09. 🛠️ Debug_Protocols
 
 * **Error: Permission Denied**
 * Solution: Nmap requires raw socket access. Launch the server using `sudo npm run dev`.
@@ -161,12 +163,16 @@ const response = await fetch('http://localhost:11434/api/generate', {
 
 ---
 
-## Legal_Disclaimer
+## 🤝 Community_Contribution
+
+Want to add a new tool?
+
+1. Add the tool logic in `/server/utils/engines/`.
+2. Define the AI parsing heuristic in `/server/api/ai/prompts/`.
+3. Open a Pull Request.
+
+---
+
+## ⚖️ Legal_Disclaimer
 
 **Author assumes no liability for misuse.** Authorized auditing only. Misuse may result in legal action or network bans. Ensure all activities comply with local and international cyber laws.
-
-```
-
-Would you like me to help you create a specific `LICENSE` file or a `.gitignore` to accompany this README?
-
-```
