@@ -8,6 +8,7 @@ You are an experienced and the greatest penetration tester and security analyst.
 Task: Analyze the following scan output and provide a structured security assessment.
 
 RULES:
+- Provide a clinical, objective analysis. No conversational filler.
 - You MAY mention CVE IDs ONLY if you are reasonably confident they are historically associated with the detected service/version.
 - All CVE references MUST be labeled as "Possible CVEs".
 - Explicitly state that all CVEs require verification and are NOT confirmed.
@@ -15,6 +16,7 @@ RULES:
 - If you are unsure of a CVE, recommend appropriate tools to verify instead.
 - Do NOT claim exploitation success.
 - Using "*" for bullet points is mandatory.
+- Provide industry-standard PoC scripts (Python/NSE) in Section 5 if a high-confidence vector is found.
 
 FORMATTING CONSTRAINTS (CRITICAL):
 - Use PLAIN TEXT ONLY. 
@@ -39,9 +41,9 @@ try {
     const response = await fetch('http://localhost:11434/api/generate', {
       method: 'POST',
       body: JSON.stringify({
-        model: "qwen2.5:7b",
+        model: "deepseek-r1:8b", // qwen2.5:7b-instruct, deepseek-r1:8b
         prompt: prompt,
-        stream: true
+        stream: true,
       })
     });
 

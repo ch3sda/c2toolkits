@@ -1,8 +1,228 @@
-        // qwen2.5:7b is a good balance between performance and capability
-        //     pro: better understanding of technical content
-        //     con: may require more resources, 
-        // if you have low software specs, use smaller models like "llama3.2:3b"
-        //     pro: lower resource usage
-        //     con: may miss nuanced technical details
-        // you can change the model based on your Ollama setup
-        // Adjust model choice based on your Ollama installation and resource availability
+Promt
+
+You are an experienced and the greatest penetration tester and security analyst.
+
+Task: Analyze the following scan output and provide a structured security assessment.
+
+
+RULES:
+
+- You MAY mention CVE IDs ONLY if you are reasonably confident they are historically associated with the detected service/version.
+
+- All CVE references MUST be labeled as "Possible CVEs".
+
+- Explicitly state that all CVEs require verification and are NOT confirmed.
+
+- Do NOT fabricate CVE IDs.
+
+- If you are unsure of a CVE, recommend appropriate tools to verify instead.
+
+- Do NOT claim exploitation success.
+
+- Using "*" for bullet points is mandatory.
+
+- Provide or add an exploit script to the "STEP-BY-STEP PENTEST NEXT ACTIONS" part if found any in the finding result
+
+
+FORMATTING CONSTRAINTS (CRITICAL):
+
+- Use PLAIN TEXT ONLY. 
+
+- DO NOT use Markdown headers (no # or ## or ###).
+
+- DO NOT use bold text (no ** symbols).
+
+- DO NOT use italics (no * or _ for emphasis).
+
+- Use ALL CAPS for section headers instead.
+
+- Ensure there is a blank line between sections.
+
+
+OUTPUT FORMAT:
+
+1. SUMMARY OF FINDINGS
+
+2. IDENTIFIED SERVICES & RISK LEVEL
+
+3. POSSIBLE CVES (REQUIRING VERIFICATION)
+
+4. RECOMMENDED VERIFICATION TOOLS
+
+5. STEP-BY-STEP PENTEST NEXT ACTIONS
+
+
+Here is the ${featureData.tool} data to analyze:
+
+${JSON.stringify(featureData.findings, null, 2)}
+
+
+NMAP SCAN
+
+ Standard_Output // Nmap 
+
+ # nmap -T4 scanme.nmap.org Starting Nmap 7.98 ( https://nmap.org ) at 2025-12-26 15:02 +0700
+
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+
+Host is up (0.23s latency).
+
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+
+Not shown: 993 closed tcp ports (reset)
+
+PORT      STATE    SERVICE
+
+22/tcp    open     ssh
+
+80/tcp    open     http
+
+111/tcp   filtered rpcbind
+
+445/tcp   filtered microsoft-ds
+
+593/tcp   filtered http-rpc-epmap
+
+9929/tcp  open     nping-echo
+
+31337/tcp open     Elite
+
+
+Phi3.5 Output
+
+如果您は誤っていま0s, the context of this task is a Python code snippet that I 
+
+want to translate into German and provide an answer: "The following 
+
+information was provided by your system'tutoring assistant. The document
+
+ discusses three different types/methods for measuring soil moisture in 
+
+plants using various tools or methods including TDR (Tunneled Repeating 
+
+Rate of Return, a method used to measure the rate at which water moves 
+
+through and intoxicates its way across an object's surface area.
+
+ 	## Your task: Translate this document for me on your own words without
+
+ using any external resources or tools like Google Drive API in order 
+
+that it is not related directly with Python code, but rather a list of 
+
+questions to be asked during the interview process and provide answers 
+
+based solely from what's provided.
+
+   Blog post title: "The Importance Of Understanding Your Target 
+
+Audience" ب크너니 in English translation for an academic research paper on 
+
+climate change, focusing specifically at a university level of 
+
+complexity with the following constraints and requirements:\n- The 
+
+document should be written as if it
+
+
+Deepseek-r1:8b output
+SUMMARY OF FINDINGS
+this scan identified several services running on the target host. open ports include ssh (22/tcp), http (80/tcp), nping-echo (9929/tcp), and an application named 'Elite' (31337/tcp). filtered ports (111/tcp, 445/tcp, 593/tcp) suggest services exist but are not accessible from the current scan position. the os was not detected.
+
+IDENTIFIED SERVICES & RISK LEVEL
+*   PORT 22/TCP (SSH): SERVICE STATUS OPEN. RISK LEVEL: MEDIUM. ssh is a critical service. misconfiguration or weak credentials could allow unauthorized access. default configurations or weak keys are potential concerns.
+*   PORT 80/TCP (HTTP): SERVICE STATUS OPEN. RISK LEVEL: MEDIUM. a standard web server service. risks include insecure configurations, outdated software, or web application vulnerabilities (e.g., sqli, xss).
+*   PORT 9929/TCP (NPING-ECHO): SERVICE STATUS OPEN. RISK LEVEL: LOW/MEDIUM. nping-echo is a network tool/service. while potentially indicative of nping activity, its direct security impact is unclear without further context or interaction. it may be used for reconnaissance or reflection attacks.
+*   PORT 31337/TCP (ELITE): SERVICE STATUS OPEN. RISK LEVEL: MEDIUM. 'elite' refers to a text-based chat protocol client/server. while not a standard service, running a custom or less common service could pose risks if it has vulnerabilities or is exposed to the internet without proper access controls.
+*   FILTERED PORTS (111/tcp, 445/tcp, 593/tcp): SERVICE STATUS FILTERED. RISK LEVEL: UNKNOWN. these ports are likely running rpcbind, microsoft-ds (smb), and http-rpc-epmap respectively. being filtered indicates the services are protected by a firewall or the scanner encountered an error. the actual risk depends on the services and their configurations if accessible.
+
+POSSIBLE CVES (REQUIRING VERIFICATION)
+*   PORT 22/TCP (SSH): OPENSSH. *possible cves requiring verification include:* CVE-2023-30118 (insufficient entropy for password based key generation), CVE-2023-30117 (backdoor in libssh), CVE-2023-30116 (insecure entropy in dropbear). *note: all cves require verification and are not confirmed.*
+*   PORT 80/TCP (HTTP): OPEN. *possible cves requiring verification are associated with common web server software (apache httpd, nginx, microsoft iis) if identified. examples include:* CVE-2021-4034 (log4j vulnerability), CVE-2022-26916 (apache log4shell), CVE-2021-4030 (apache httpd http response header buffer overflow). *note: specific cves depend on the server software version and require verification and are not confirmed.*
+
+RECOMMENDED VERIFICATION TOOLS
+*   FOR SSH (PORT 22): USE `ssh -v` OR `ssh -vvv` TO CHECK VERSION. PERFORM CREDENTIALS ENUMERATION (TOOL: `hydra`, `crowbar`, `medusa`). TEST FOR COMMON SSH CONFIGURATION ISSUES (TOOL: `nmap --script ssh-brute`, `openssh-check`). USE `nmap --script ssh-keyscan` TO CHECK KEY VERSIONS.
+*   FOR HTTP (PORT 80): IDENTIFY THE WEB SERVER SOFTWARE AND VERSION (TOOL: `nmap -A`, `whatweb`, `wappalyzer`, browser inspection). SCAN FOR VULNERABILITIES (TOOL: `nikto`, `wpscan` (if wordpress), `skipfish`, `owasp-zap`). PERFORM MANUAL VULNERABILITY ASSESSMENT AND PENETRATION TESTING OF THE WEB APPLICATION.
+*   FOR NPING-ECHO (PORT 9929): CHECK OPENPING/CLIPING SERVICE CONFIGURATION (TOOL: `nping --nping-clipping`, `nping --nping-openping`). SEARCH FOR RELEVANCE TO THIS PORT NUMBER AND SERVICE NAME.
+*   FOR ELITE (PORT 31337): DETERMINE THE SERVER IMPLEMENTATION (CUSTOM?). CHECK FOR KNOWN VULNERABILITIES IN SIMILAR TEXT-BASED PROTOCOLS/CHAT SERVERS. MANUAL TESTING MAY BE REQUIRED.
+*   FOR FILTERED PORTS: USE `nmap -p 111,445,593 --script rpcinfo` OR `rpcinfo -p <target>` TO IDENTIFY SERVICES. CONSIDER USING PROXY SCAN TECHNIQUES OR VULNERABILITY SCANNERS DESIGNED FOR FIREWALL INTERACTION IF POSSIBLE.
+
+STEP-BY-STEP PENTEST NEXT ACTIONS
+1.  CONFIRM OS DETAIL: Attempt OS fingerprinting again with higher options (e.g., `nmap -O -T4 -A`). If possible, perform service version detection (`nmap -sV -p 22,80,9929,31337`). This will help identify the exact software versions on open ports.
+2.  RECONNAISSANCE:
+    *   For Port 22: Check for default credentials (e.g., root/root, user/user). Enumerate users using `ssh -l root -t <target> 'id'` or similar brute-forcing tools if no credentials are known.
+    *   For Port 80: Perform a web application scan (e.g., using OWASP ZAP spider mode, or Nikto). Check for sensitive information disclosure, HTTP header issues, and common web vulnerabilities. Attempt directory traversal (`/etc/passwd`). Look for default documents (`index.php`, `index.html`).
+    *   For Port 9929: Attempt nping clipping/openping tests to understand the service behavior. Check if it echoes requests in a way that could be used for DoS or information leakage.
+    *   For Port 31337: Attempt connection with a client compatible with the Elite protocol to understand its functionality. Check for known server implementations or vulnerabilities specific to that protocol.
+3.  VULNERABILITY VERIFICATION:
+    *   Verify the *possible cves* listed above by cross-referencing the service versions obtained in step 1 with the National Vulnerability Database (NVD) or other vulnerability databases. Use tools like `nmap --script <specific vuln script>` or `openvas`/`nessus` scans configured with the identified version.
+    *   For the web server on Port 80, use tools like WPScan (if WordPress) or Nuclei with custom YAML rules targeting known vulnerabilities.
+4.  EXPLOITATION (IF APPLICABLE):
+    *   *if verifying specific cves leads to an exploitable vulnerability*, proceed with exploitation. *example for CVE-2023-30118 (openssh):* use `ssh-vuln-server` or other tools designed for this specific vulnerability.
+    *   *if the Elite service is identified as a specific known vulnerable server (e.g., CVE-2019-XXXX):* use an exploit script from Metasploit Framework (search for 'elite' protocol exploits).
+5.  LATERAL MOVEMENT/ACCESS EXPANSION: If initial access is gained (via SSH or web shell), enumerate the user accounts, file systems, network configurations, and running processes to identify further attack vectors.
+6.  REPORTING: Document all findings, including the methods used, verification steps, and any potential exploits demonstrated (with the caveat that no actual exploitation occurred during this assessment).
+
+
+qwen2.5:7b-instruct
+SUMMARY OF FINDINGS:
+THE SCANNED HOST SHOWS THE FOLLOWING PORTS OPEN AND SERVICES:
+
+- SSH SERVICE ON PORT 22
+- HTTP SERVER ON PORT 80
+- RPCBIND SERVICE FILTERED ON PORT 111
+- MICROSOFT-DATA-SERVICES (MSSQL) FILTERED ON PORT 445
+- HP NENCO/DCOM RPC EPMAF FILTERED ON PORT 593
+- NPING-ECHO SERVICE ON PORT 9929
+- ELITE SERVICE ON PORT 31337
+
+IDENTIFIED SERVICES & RISK LEVEL:
+SSH (PORT 22): LOW RISK - COMMON AND WIDELY USED, BUT SECURE IF CONFIGURED PROPERLY.
+HTTP (PORT 80): MEDIUM RISK - OPEN TO WEB-BASED ATTACKS LIKE XSS OR SQL INJECTION IF NOT PROPERLY SECURE.
+RPCBIND (PORT 111) AND MICROSOFT-DATA-SERVICES (MSSQL, PORT 445), HP NENCO/DCOM RPC EPMAF (PORT 593): LOW RISK - FILTERED STATE SUGGESTS THESE SERVICES ARE NOT ACTIVELY LISTENING, BUT STILL POTENTIAL VULNERABILITIES TO CONSIDER.
+NPING-ECHO (PORT 9929) AND ELITE (PORT 31337): LOW RISK - THESE SERVICES DO NOT SEEM COMMON, BUT SHOULD BE CHECKED FOR ANY KNOWN ISSUES.
+
+POSSIBLE CVES (REQUIRING VERIFICATION):
+* SSH: NO CONTEMPORARY CVES LISTED FOR CURRENTLY USED VERSIONS OF OPENSSH. HOWEVER, PAST VULNERABILITIES HAVE BEEN REPORTED, SUCH AS POSSIBLY RELATED TO CERTAIN SSH PROTOCOL IMPLEMENTATIONS.
+* HTTP: POTENTIAL XSS OR SQL INJECTION VULNERABILITIES CAN EXIST BASED ON WEBSITE CONTENT AND CODE QUALITY. NO SPECIFIC CVES DETECTED HERE.
+* RPCBIND: HISTORICALLY, RPC SERVICES HAVE BEEN TARGETED. "LPCON" ATTACK WAS COMMONLY REPORTED (CVE-2017-3506), BUT THIS IS NOT CURRENTLY APPLICABLE AS THE SERVICE IS FILTERED.
+* MICROSOFT-DATA-SERVICES (MSSQL): HISTORICALLY, VULNERABILITIES LIKE CVE-2019-0708 HAVE BEEN REPORTED. STILL CHECK FOR ANY PATCHES OR UPDATE NECESSITY.
+* HP NENCO/DCOM RPC EPMAF: NO CURRENTLY LISTED CVEs, BUT SHOULD BE MONITORED.
+* NPING-ECHO AND ELITE: NO KNOWN CVEs ASSOCIATED WITH THESE SERVICES, BUT THEY ARE RARE AND MAY HAVE UNPUBLISHED ISSUES. CHECK THEIR DOCUMENTATION AND UPDATE HISTORY.
+
+RECOMMENDED VERIFICATION TOOLS:
+FOR SSH: USE "SSH AUDIT" OR "SSHCHECK" TO VERIFY CONFIGURATION.
+FOR HTTP: USE "OWASP ZAP", "BURPSUIT" FOR WEB SCANNING.
+FOR RPCBIND, MICROSOFT-DATA-SERVICES (MSSQL), HP NENCO/DCOM RPC EPMAF: CHECK SYSTEM UPDATES AND PATCHES THROUGH VULNERABILITY DATABASES LIKE CVE SEARCHES.
+FOR NPING-ECHO AND ELITE: REVIEW SERVICE DOCUMENTATION FOR ANY SECURITY GUIDELINES OR ISSUES.
+
+STEP-BY-STEP PENTEST NEXT ACTIONS:
+1. VERIFY SSH CONFIGURATION AGAINST BEST PRACTICES TO ENSURE SECURE KEY EXCHANGE METHODS, AUTHENTICATION MECHANISMS, AND PROTOCOL VERSIONS.
+2. USE OWASP ZAP OR BURPSUIT TO CONDUCT A WEB APPLICATION SCANNER ON THE HTTP SERVER TO IDENTIFY ANY XSS OR SQL INJECTION VULNERABILITIES.
+3. CHECK RPCBIND, MICROSOFT-DATA-SERVICES (MSSQL), AND HP NENCO/DCOM RPC EPMAF FOR ANY UPDATES OR PATCHES THROUGH CVE SEARCHES.
+4. REVIEW NPING-ECHO AND ELITE SERVICES DOCUMENTATION FOR SECURITY GUIDELINES TO ENSURE THEY ARE CONFIGURED CORRECTLY.
+
+IF YOU NOTICE ANY UNUSUAL BEHAVIOR, CONSIDER CREATING A POC (PROTOTYPE OF CONCEPT) SCRIPT USING PYTHON OR METASPLOIT FRAMEWORK TO DETERMINE IF THE SERVICE IS VULNERABLE. HERE IS AN EXAMPLE SNIPPET FOR SSH CHECK:
+
+```
+#!/usr/bin/env python3
+import paramiko
+
+def ssh_check(ip, port):
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    
+    try:
+        client.connect(ip, port=port, username='root', password='password')
+        print("SSH service is accessible from the given credentials.")
+    except paramiko.AuthenticationException as e:
+        print(f"Authentication failed: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
+        client.close()
+
+ssh_check('45.33.32.156', 22)
+```
+
+REMEMBER TO REPLACE 'ROOT' AND 'PASSWORD' WITH ACTUAL CREDENTIALS OR USE A MORE SECURE AUTHENTICATION MECHANISM LIKE PUBLIC-KEY AUTHORIZATION.

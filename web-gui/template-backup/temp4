@@ -1,0 +1,14 @@
+NMAP
+scanme.nmap.org
+
+GOBUSTER
+http://testphp.vulnweb.com/
+
+
+SQLMAP
+https://juice-shop.herokuapp.com/rest/products/search?q=
+
+--dbms=sqlite --technique=B --level=5 --risk=3 --batch
+
+SUBFINDER
+rupp.edu.kh
