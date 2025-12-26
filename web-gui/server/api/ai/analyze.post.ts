@@ -41,7 +41,7 @@ try {
     const response = await fetch('http://localhost:11434/api/generate', {
       method: 'POST',
       body: JSON.stringify({
-        model: "deepseek-r1:8b", // qwen2.5:7b-instruct, deepseek-r1:8b
+        model: "llama3.2:3b", // qwen2.5:7b-instruct, deepseek-r1:8b , llama3.2:3b
         prompt: prompt,
         stream: true,
       })
